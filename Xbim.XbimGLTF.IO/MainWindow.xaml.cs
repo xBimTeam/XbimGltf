@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -92,10 +93,153 @@ namespace Xbim.XbimGLTF.IO
 
         private void libtest_Click(object sender, RoutedEventArgs e)
         {
-            var t = glTFLoader.Interface.LoadModel("Data\\BoxInterleaved.gltf");
+            var t = glTFLoader.Interface.LoadModel("..\\..\\..\\Resources\\OneWall.gltf");
+
+            report(t);
 
             var gltf = CreateModel();
             glTFLoader.Interface.SaveModel(gltf, "Data\\BoxInterleaved2.gltf");
+        }
+
+        private void report(Gltf t)
+        {
+            var sb = new StringBuilder();
+            ReportAllProperties(t, sb);
+            Debug.WriteLine(sb.ToString());
+            // PrintProperties(t, 0);
+        }
+
+        public static string ReportAllProperties<T>(T instance, StringBuilder sb, int indent = 0) where T : class
+        {
+            if (instance == null)
+                return string.Empty;
+
+            var strListType = typeof(List<string>);
+            var strArrType = typeof(string[]);
+
+
+
+            var arrayTypes = new[] { strListType, strArrType };
+            var handledTypes = new[] {
+                typeof(bool),
+                typeof(Int32),
+                typeof(String),
+                typeof(DateTime),
+                typeof(double),
+                typeof(decimal),
+                typeof(float),
+                strListType,
+                strArrType
+            };
+
+            try
+            {
+                
+
+                var ind = new string('\t', indent);
+
+                
+                var elems = instance as System.Collections.ICollection;
+                if (elems != null)
+                {
+                    sb.AppendLine(ind + "===");
+
+                    int i = 0;
+                    if (elems.Count == 16)
+                    {
+                        sb.Append(ind);
+                        foreach (var elem in elems)
+                        {
+                            sb.Append(elem + "\t");
+                            i++;
+                            if (i==4  || i  == 8 || i == 12)
+                            {
+                                sb.AppendLine("");
+                                sb.Append(ind);
+                            }
+                        }
+                        sb.AppendLine("");
+                    }
+                    else {
+                        
+                        foreach (var elem in elems)
+                        {
+                            if (handledTypes.Contains(elem.GetType()))
+                            {
+                                sb.AppendLine(ind + $"( {i++} ) '{elem}'");
+                            }
+                            else
+                            {
+                                sb.AppendLine(ind + $"( {i++} ) [{elem.GetType().Name}]");
+                                ReportAllProperties(elem, sb, indent + 1);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    var validProperties = instance.GetType()
+                                              .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                                              // .Where(prop => handledTypes.Contains(prop.PropertyType))
+                                              .Where(prop => prop.GetValue(instance, null) != null)
+                                              .ToList();
+                    if (!validProperties.Any())
+                        return "";
+                    var format = ind + string.Format("{{0,-{0}}} : {{1}}", validProperties.Max(prp => prp.Name.Length));
+                    foreach (var prop in validProperties)
+                    {
+                        if (prop.Name == "SyncRoot")
+                            continue;
+                        var itervalue = prop.GetValue(instance, null);
+                        var outv = string.Format(format, prop.Name, (arrayTypes.Contains(prop.PropertyType) ? string.Join(", ", (IEnumerable<string>)itervalue) : prop.GetValue(instance, null)));
+                        sb.AppendLine(outv);
+                        if (!handledTypes.Contains(prop.PropertyType))
+                        {
+                            ReportAllProperties(itervalue, sb, indent + 1);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return "";
+            
+        }
+
+        public void PrintProperties(object obj, int indent)
+        {
+            if (obj == null) return;
+            string indentString = new string(' ', indent);
+            Type objType = obj.GetType();
+            PropertyInfo[] properties = objType.GetProperties();
+            foreach (PropertyInfo property in properties)
+            {
+                object propValue = property.GetValue(obj, null);
+                var elems = propValue as System.Collections.IList;
+                if (elems != null)
+                {
+                    foreach (var item in elems)
+                    {
+                        PrintProperties(item, indent + 3);
+                    }
+                }
+                else
+                {
+                    // This will not cut-off System.Collections because of the first check
+                    if (property.PropertyType.Assembly == objType.Assembly)
+                    {
+                        Debug.WriteLine("{0}{1}:", indentString, property.Name);
+
+                        PrintProperties(propValue, indent + 2);
+                    }
+                    else
+                    {
+                        Debug.WriteLine("{0}{1}: {2}", indentString, property.Name, propValue);
+                    }
+                }
+            }
         }
 
         private static glTFLoader.Schema.Gltf CreateModel()
