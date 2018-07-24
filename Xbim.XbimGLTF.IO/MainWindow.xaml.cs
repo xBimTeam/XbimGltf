@@ -93,7 +93,7 @@ namespace Xbim.XbimGLTF.IO
 
         private void libtest_Click(object sender, RoutedEventArgs e)
         {
-            var t = glTFLoader.Interface.LoadModel("..\\..\\..\\Resources\\OneWall.gltf");
+            var t = glTFLoader.Interface.LoadModel("..\\..\\..\\Resources\\TwoWallsTwoColour.gltf");
 
             report(t);
 

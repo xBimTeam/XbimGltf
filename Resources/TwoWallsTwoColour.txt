@@ -1,0 +1,279 @@
+Accessors   : glTFLoader.Schema.Accessor[]
+	===
+	( 0 ) [Accessor]
+		BufferView    : 0
+		ByteOffset    : 0
+		ComponentType : UNSIGNED_SHORT
+		Normalized    : False
+		Count         : 36
+		Type          : SCALAR
+		Max           : System.Single[]
+			===
+			( 0 ) '23'
+		Min           : System.Single[]
+			===
+			( 0 ) '0'
+	( 1 ) [Accessor]
+		BufferView    : 1
+		ByteOffset    : 0
+		ComponentType : FLOAT
+		Normalized    : False
+		Count         : 24
+		Type          : VEC3
+		Max           : System.Single[]
+			===
+			( 0 ) '1'
+			( 1 ) '1'
+			( 2 ) '1'
+		Min           : System.Single[]
+			===
+			( 0 ) '-1'
+			( 1 ) '-1'
+			( 2 ) '-1'
+	( 2 ) [Accessor]
+		BufferView    : 1
+		ByteOffset    : 288
+		ComponentType : FLOAT
+		Normalized    : False
+		Count         : 24
+		Type          : VEC3
+		Max           : System.Single[]
+			===
+			( 0 ) '6'
+			( 1 ) '0.155'
+			( 2 ) '8'
+		Min           : System.Single[]
+			===
+			( 0 ) '0'
+			( 1 ) '-0.155'
+			( 2 ) '0'
+	( 3 ) [Accessor]
+		BufferView    : 0
+		ByteOffset    : 72
+		ComponentType : UNSIGNED_SHORT
+		Normalized    : False
+		Count         : 36
+		Type          : SCALAR
+		Max           : System.Single[]
+			===
+			( 0 ) '23'
+		Min           : System.Single[]
+			===
+			( 0 ) '0'
+	( 4 ) [Accessor]
+		BufferView    : 1
+		ByteOffset    : 576
+		ComponentType : FLOAT
+		Normalized    : False
+		Count         : 24
+		Type          : VEC3
+		Max           : System.Single[]
+			===
+			( 0 ) '1'
+			( 1 ) '1'
+			( 2 ) '1'
+		Min           : System.Single[]
+			===
+			( 0 ) '-1'
+			( 1 ) '-1'
+			( 2 ) '-1'
+	( 5 ) [Accessor]
+		BufferView    : 1
+		ByteOffset    : 864
+		ComponentType : FLOAT
+		Normalized    : False
+		Count         : 24
+		Type          : VEC3
+		Max           : System.Single[]
+			===
+			( 0 ) '5'
+			( 1 ) '0.145'
+			( 2 ) '8'
+		Min           : System.Single[]
+			===
+			( 0 ) '0'
+			( 1 ) '-0.145'
+			( 2 ) '0'
+Asset       : glTFLoader.Schema.Asset
+	Generator : COLLADA2GLTF
+	Version   : 2.0
+Buffers     : glTFLoader.Schema.Buffer[]
+	===
+	( 0 ) [Buffer]
+		Uri        : data:application/octet-stream;base64,AAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AADAQFK4Hj4AAABBAADAQFK4Hj4AAAAAAAAAAFK4Hj4AAAAAAAAAAFK4Hj4AAABBAAAAAFK4Hj4AAABBAAAAAFK4Hj4AAAAAAAAAAFK4Hr4AAAAAAAAAAFK4Hr4AAABBAAAAAFK4Hr4AAABBAAAAAFK4Hr4AAAAAAADAQFK4Hr4AAAAAAADAQFK4Hr4AAABBAADAQFK4Hr4AAABBAADAQFK4Hr4AAAAAAADAQFK4Hj4AAAAAAADAQFK4Hj4AAABBAAAAAFK4Hj4AAAAAAADAQFK4Hr4AAAAAAAAAAFK4Hr4AAAAAAADAQFK4Hj4AAAAAAAAAAFK4Hr4AAABBAADAQFK4Hr4AAABBAAAAAFK4Hj4AAABBAADAQFK4Hj4AAABBAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AACgQOJ6FD4AAABBAACgQOJ6FD4AAAAAAAAAAOJ6FD4AAAAAAAAAAOJ6FD4AAABBAAAAAOJ6FD4AAABBAAAAAOJ6FD4AAAAAAAAAAOJ6FL4AAAAAAAAAAOJ6FL4AAABBAAAAAOJ6FL4AAABBAAAAAOJ6FL4AAAAAAACgQOJ6FL4AAAAAAACgQOJ6FL4AAABBAACgQOJ6FL4AAABBAACgQOJ6FL4AAAAAAACgQOJ6FD4AAAAAAACgQOJ6FD4AAABBAAAAAOJ6FL4AAAAAAACgQOJ6FD4AAAAAAACgQOJ6FL4AAAAAAAAAAOJ6FD4AAAAAAACgQOJ6FL4AAABBAACgQOJ6FD4AAABBAAAAAOJ6FL4AAABBAAAAAOJ6FD4AAABBAAABAAIAAwAAAAIABAAFAAYABwAEAAYACAAJAAoACwAIAAoADAANAA4ADwAMAA4AEAARABIAEAATABEAFAAVABYAFQAXABYAAAABAAIAAwAAAAIABAAFAAYABwAEAAYACAAJAAoACwAIAAoADAANAA4ADwAMAA4AEAARABIAEwARABAAFAAVABYAFgAVABcA
+		ByteLength : 1296
+BufferViews : glTFLoader.Schema.BufferView[]
+	===
+	( 0 ) [BufferView]
+		Buffer     : 0
+		ByteOffset : 1152
+		ByteLength : 144
+		Target     : ELEMENT_ARRAY_BUFFER
+	( 1 ) [BufferView]
+		Buffer     : 0
+		ByteOffset : 0
+		ByteLength : 1152
+		ByteStride : 12
+		Target     : ARRAY_BUFFER
+Materials   : glTFLoader.Schema.Material[]
+	===
+	( 0 ) [Material]
+		Name                 : 246_BrickEngineering-fx
+		PbrMetallicRoughness : glTFLoader.Schema.MaterialPbrMetallicRoughness
+			BaseColorFactor : System.Single[]
+				===
+				( 0 ) '0'
+				( 1 ) '0'
+				( 2 ) '1'
+				( 3 ) '1'
+			MetallicFactor  : 0
+			RoughnessFactor : 1
+		EmissiveFactor       : System.Single[]
+			===
+			( 0 ) '0'
+			( 1 ) '0'
+			( 2 ) '0'
+		AlphaMode            : OPAQUE
+		AlphaCutoff          : 0.5
+		DoubleSided          : False
+	( 1 ) [Material]
+		Name                 : 136_BrickEngineeringGrey-fx
+		PbrMetallicRoughness : glTFLoader.Schema.MaterialPbrMetallicRoughness
+			BaseColorFactor : System.Single[]
+				===
+				( 0 ) '0.3921569'
+				( 1 ) '1'
+				( 2 ) '0.1960784'
+				( 3 ) '1'
+			MetallicFactor  : 0
+			RoughnessFactor : 1
+		EmissiveFactor       : System.Single[]
+			===
+			( 0 ) '0'
+			( 1 ) '0'
+			( 2 ) '0'
+		AlphaMode            : OPAQUE
+		AlphaCutoff          : 0.5
+		DoubleSided          : False
+Meshes      : glTFLoader.Schema.Mesh[]
+	===
+	( 0 ) [Mesh]
+		Primitives : glTFLoader.Schema.MeshPrimitive[]
+			===
+			( 0 ) [MeshPrimitive]
+				Attributes : System.Collections.Generic.Dictionary`2[System.String,System.Int32]
+					===
+					( 0 ) [KeyValuePair`2]
+						Key   : NORMAL
+						Value : 1
+					( 1 ) [KeyValuePair`2]
+						Key   : POSITION
+						Value : 2
+				Indices    : 0
+				Material   : 0
+				Mode       : TRIANGLES
+		Name       : 257_BasicWallWallExt_102Bwk50Air45Ins100DBlk12P285562
+	( 1 ) [Mesh]
+		Primitives : glTFLoader.Schema.MeshPrimitive[]
+			===
+			( 0 ) [MeshPrimitive]
+				Attributes : System.Collections.Generic.Dictionary`2[System.String,System.Int32]
+					===
+					( 0 ) [KeyValuePair`2]
+						Key   : NORMAL
+						Value : 4
+					( 1 ) [KeyValuePair`2]
+						Key   : POSITION
+						Value : 5
+				Indices    : 3
+				Material   : 1
+				Mode       : TRIANGLES
+		Name       : 150_BasicWallWallExt_102Bwk75Ins100LBlk12P285345
+Nodes       : glTFLoader.Schema.Node[]
+	===
+	( 0 ) [Node]
+		Children    : System.Int32[]
+			===
+			( 0 ) '2'
+			( 1 ) '1'
+		Matrix      : System.Single[]
+			===
+			1	0	0	0	
+			0	0	-1	0	
+			0	1	0	0	
+			0	0	0	1	
+		Rotation    : System.Single[]
+			===
+			( 0 ) '0'
+			( 1 ) '0'
+			( 2 ) '0'
+			( 3 ) '1'
+		Scale       : System.Single[]
+			===
+			( 0 ) '1'
+			( 1 ) '1'
+			( 2 ) '1'
+		Translation : System.Single[]
+			===
+			( 0 ) '0'
+			( 1 ) '0'
+			( 2 ) '0'
+		Name        : Z_UP
+	( 1 ) [Node]
+		Matrix      : System.Single[]
+			===
+			-1	0	0	0	
+			0	-1	0	0	
+			0	0	1	0	
+			0	0	0	1	
+		Mesh        : 0
+		Rotation    : System.Single[]
+			===
+			( 0 ) '0'
+			( 1 ) '0'
+			( 2 ) '0'
+			( 3 ) '1'
+		Scale       : System.Single[]
+			===
+			( 0 ) '1'
+			( 1 ) '1'
+			( 2 ) '1'
+		Translation : System.Single[]
+			===
+			( 0 ) '0'
+			( 1 ) '0'
+			( 2 ) '0'
+		Name        : 257_BasicWallWallExt_102Bwk50Air45Ins100DBlk12P285562
+	( 2 ) [Node]
+		Matrix      : System.Single[]
+			===
+			1	0	0	0	
+			0	1	0	0	
+			0	0	1	0	
+			0	0	0	1	
+		Mesh        : 1
+		Rotation    : System.Single[]
+			===
+			( 0 ) '0'
+			( 1 ) '0'
+			( 2 ) '0'
+			( 3 ) '1'
+		Scale       : System.Single[]
+			===
+			( 0 ) '1'
+			( 1 ) '1'
+			( 2 ) '1'
+		Translation : System.Single[]
+			===
+			( 0 ) '0'
+			( 1 ) '0'
+			( 2 ) '0'
+		Name        : 150_BasicWallWallExt_102Bwk75Ins100LBlk12P285345
+Scene       : 0
+Scenes      : glTFLoader.Schema.Scene[]
+	===
+	( 0 ) [Scene]
+		Nodes : System.Int32[]
+			===
+			( 0 ) '0'
+

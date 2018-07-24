@@ -1,0 +1,240 @@
+{
+    "asset": {
+        "generator": "COLLADA2GLTF",
+        "version": "2.0"
+    },
+    "scenes": [
+        {
+            "nodes": [
+                0
+            ]
+        }
+    ],
+    "scene": 0,
+    "nodes": [
+        {
+            "children": [
+                2,
+                1
+            ],
+            "matrix": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "name": "Z_UP"
+        },
+        {
+            "mesh": 0,
+            "matrix": [
+                -1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "name": "257_BasicWallWallExt_102Bwk50Air45Ins100DBlk12P285562"
+        },
+        {
+            "mesh": 1,
+            "name": "150_BasicWallWallExt_102Bwk75Ins100LBlk12P285345"
+        }
+    ],
+    "meshes": [
+        {
+            "primitives": [
+                {
+                    "attributes": {
+                        "NORMAL": 1,
+                        "POSITION": 2
+                    },
+                    "indices": 0,
+                    "mode": 4,
+                    "material": 0
+                }
+            ],
+            "name": "257_BasicWallWallExt_102Bwk50Air45Ins100DBlk12P285562"
+        },
+        {
+            "primitives": [
+                {
+                    "attributes": {
+                        "NORMAL": 4,
+                        "POSITION": 5
+                    },
+                    "indices": 3,
+                    "mode": 4,
+                    "material": 1
+                }
+            ],
+            "name": "150_BasicWallWallExt_102Bwk75Ins100LBlk12P285345"
+        }
+    ],
+    "accessors": [
+        {
+            "bufferView": 0,
+            "byteOffset": 0,
+            "componentType": 5123,
+            "count": 36,
+            "max": [
+                23
+            ],
+            "min": [
+                0
+            ],
+            "type": "SCALAR"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 24,
+            "max": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "min": [
+                -1.0,
+                -1.0,
+                -1.0
+            ],
+            "type": "VEC3"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 288,
+            "componentType": 5126,
+            "count": 24,
+            "max": [
+                6.0,
+                0.1550000011920929,
+                8.0
+            ],
+            "min": [
+                0.0,
+                -0.1550000011920929,
+                0.0
+            ],
+            "type": "VEC3"
+        },
+        {
+            "bufferView": 0,
+            "byteOffset": 72,
+            "componentType": 5123,
+            "count": 36,
+            "max": [
+                23
+            ],
+            "min": [
+                0
+            ],
+            "type": "SCALAR"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 576,
+            "componentType": 5126,
+            "count": 24,
+            "max": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "min": [
+                -1.0,
+                -1.0,
+                -1.0
+            ],
+            "type": "VEC3"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 864,
+            "componentType": 5126,
+            "count": 24,
+            "max": [
+                5.0,
+                0.1450000107288361,
+                8.0
+            ],
+            "min": [
+                0.0,
+                -0.1450000107288361,
+                0.0
+            ],
+            "type": "VEC3"
+        }
+    ],
+    "materials": [
+        {
+            "pbrMetallicRoughness": {
+                "baseColorFactor": [
+                    0.0,
+                    0.0,
+                    1.0,
+                    1.0
+                ],
+                "metallicFactor": 0.0
+            },
+            "name": "246_BrickEngineering-fx"
+        },
+        {
+            "pbrMetallicRoughness": {
+                "baseColorFactor": [
+                    0.3921568989753723,
+                    1.0,
+                    0.19607840478420256,
+                    1.0
+                ],
+                "metallicFactor": 0.0
+            },
+            "name": "136_BrickEngineeringGrey-fx"
+        }
+    ],
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteOffset": 1152,
+            "byteLength": 144,
+            "target": 34963
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 0,
+            "byteLength": 1152,
+            "byteStride": 12,
+            "target": 34962
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 1296,
+            "uri": "data:application/octet-stream;base64,AAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AADAQFK4Hj4AAABBAADAQFK4Hj4AAAAAAAAAAFK4Hj4AAAAAAAAAAFK4Hj4AAABBAAAAAFK4Hj4AAABBAAAAAFK4Hj4AAAAAAAAAAFK4Hr4AAAAAAAAAAFK4Hr4AAABBAAAAAFK4Hr4AAABBAAAAAFK4Hr4AAAAAAADAQFK4Hr4AAAAAAADAQFK4Hr4AAABBAADAQFK4Hr4AAABBAADAQFK4Hr4AAAAAAADAQFK4Hj4AAAAAAADAQFK4Hj4AAABBAAAAAFK4Hj4AAAAAAADAQFK4Hr4AAAAAAAAAAFK4Hr4AAAAAAADAQFK4Hj4AAAAAAAAAAFK4Hr4AAABBAADAQFK4Hr4AAABBAAAAAFK4Hj4AAABBAADAQFK4Hj4AAABBAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AACgQOJ6FD4AAABBAACgQOJ6FD4AAAAAAAAAAOJ6FD4AAAAAAAAAAOJ6FD4AAABBAAAAAOJ6FD4AAABBAAAAAOJ6FD4AAAAAAAAAAOJ6FL4AAAAAAAAAAOJ6FL4AAABBAAAAAOJ6FL4AAABBAAAAAOJ6FL4AAAAAAACgQOJ6FL4AAAAAAACgQOJ6FL4AAABBAACgQOJ6FL4AAABBAACgQOJ6FL4AAAAAAACgQOJ6FD4AAAAAAACgQOJ6FD4AAABBAAAAAOJ6FL4AAAAAAACgQOJ6FD4AAAAAAACgQOJ6FL4AAAAAAAAAAOJ6FD4AAAAAAACgQOJ6FL4AAABBAACgQOJ6FD4AAABBAAAAAOJ6FL4AAABBAAAAAOJ6FD4AAABBAAABAAIAAwAAAAIABAAFAAYABwAEAAYACAAJAAoACwAIAAoADAANAA4ADwAMAA4AEAARABIAEAATABEAFAAVABYAFQAXABYAAAABAAIAAwAAAAIABAAFAAYABwAEAAYACAAJAAoACwAIAAoADAANAA4ADwAMAA4AEAARABIAEwARABAAFAAVABYAFgAVABcA"
+        }
+    ]
+}

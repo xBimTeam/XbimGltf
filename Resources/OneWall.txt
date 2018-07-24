@@ -1,0 +1,171 @@
+Accessors   : glTFLoader.Schema.Accessor[]
+	===
+	( 0 ) [Accessor]
+		BufferView    : 0
+		ByteOffset    : 0
+		ComponentType : UNSIGNED_SHORT
+		Normalized    : False
+		Count         : 36
+		Type          : SCALAR
+		Max           : System.Single[]
+			===
+			( 0 ) '23'
+		Min           : System.Single[]
+			===
+			( 0 ) '0'
+	( 1 ) [Accessor]
+		BufferView    : 1
+		ByteOffset    : 0
+		ComponentType : FLOAT
+		Normalized    : False
+		Count         : 24
+		Type          : VEC3
+		Max           : System.Single[]
+			===
+			( 0 ) '1'
+			( 1 ) '1'
+			( 2 ) '1'
+		Min           : System.Single[]
+			===
+			( 0 ) '-1'
+			( 1 ) '-1'
+			( 2 ) '-1'
+	( 2 ) [Accessor]
+		BufferView    : 1
+		ByteOffset    : 288
+		ComponentType : FLOAT
+		Normalized    : False
+		Count         : 24
+		Type          : VEC3
+		Max           : System.Single[]
+			===
+			( 0 ) '4'
+			( 1 ) '0.25'
+			( 2 ) '3'
+		Min           : System.Single[]
+			===
+			( 0 ) '0'
+			( 1 ) '-0.25'
+			( 2 ) '0'
+Asset       : glTFLoader.Schema.Asset
+	Generator : COLLADA2GLTF
+	Version   : 2.0
+Buffers     : glTFLoader.Schema.Buffer[]
+	===
+	( 0 ) [Buffer]
+		Uri        : data:application/octet-stream;base64,AAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AACAQAAAgD4AAEBAAACAQAAAgD4AAAAAAAAAAAAAgD4AAAAAAAAAAAAAgD4AAEBAAAAAAAAAgL4AAEBAAAAAAAAAgD4AAEBAAAAAAAAAgD4AAAAAAAAAAAAAgL4AAAAAAAAAAAAAgL4AAEBAAAAAAAAAgL4AAAAAAACAQAAAgL4AAEBAAACAQAAAgL4AAAAAAACAQAAAgD4AAEBAAACAQAAAgL4AAEBAAACAQAAAgL4AAAAAAACAQAAAgD4AAAAAAAAAAAAAgL4AAAAAAACAQAAAgD4AAAAAAACAQAAAgL4AAAAAAAAAAAAAgD4AAAAAAACAQAAAgL4AAEBAAACAQAAAgD4AAEBAAAAAAAAAgL4AAEBAAAAAAAAAgD4AAEBAAAABAAIAAwAAAAIABAAFAAYABAAGAAcACAAJAAoACgAJAAsADAANAA4ADAAOAA8AEAARABIAEwARABAAFAAVABYAFgAVABcA
+		ByteLength : 648
+BufferViews : glTFLoader.Schema.BufferView[]
+	===
+	( 0 ) [BufferView]
+		Buffer     : 0
+		ByteOffset : 576
+		ByteLength : 72
+		Target     : ELEMENT_ARRAY_BUFFER
+	( 1 ) [BufferView]
+		Buffer     : 0
+		ByteOffset : 0
+		ByteLength : 576
+		ByteStride : 12
+		Target     : ARRAY_BUFFER
+Materials   : glTFLoader.Schema.Material[]
+	===
+	( 0 ) [Material]
+		Name                 : 138_BrickCommon-fx
+		PbrMetallicRoughness : glTFLoader.Schema.MaterialPbrMetallicRoughness
+			BaseColorFactor : System.Single[]
+				===
+				( 0 ) '0.6666667'
+				( 1 ) '0.3921569'
+				( 2 ) '0.4117647'
+				( 3 ) '1'
+			MetallicFactor  : 0
+			RoughnessFactor : 1
+		EmissiveFactor       : System.Single[]
+			===
+			( 0 ) '0'
+			( 1 ) '0'
+			( 2 ) '0'
+		AlphaMode            : OPAQUE
+		AlphaCutoff          : 0.5
+		DoubleSided          : False
+Meshes      : glTFLoader.Schema.Mesh[]
+	===
+	( 0 ) [Mesh]
+		Primitives : glTFLoader.Schema.MeshPrimitive[]
+			===
+			( 0 ) [MeshPrimitive]
+				Attributes : System.Collections.Generic.Dictionary`2[System.String,System.Int32]
+					===
+					( 0 ) [KeyValuePair`2]
+						Key   : NORMAL
+						Value : 1 (accessor)
+					( 1 ) [KeyValuePair`2]
+						Key   : POSITION
+						Value : 2 (accessor)
+				Indices    : 0 (accessor)
+				Material   : 0
+				Mode       : TRIANGLES
+		Name       : 152_BasicWallWallExt_215Bwk285815
+Nodes       : glTFLoader.Schema.Node[]
+	===
+	( 0 ) [Node]
+		Children    : System.Int32[]
+			===
+			( 0 ) '1'
+		Matrix      : System.Single[]
+			===
+			1	0	0	0	
+			0	0	-1	0	
+			0	1	0	0	
+			0	0	0	1	
+		Rotation    : System.Single[]
+			===
+			( 0 ) '0'
+			( 1 ) '0'
+			( 2 ) '0'
+			( 3 ) '1'
+		Scale       : System.Single[]
+			===
+			( 0 ) '1'
+			( 1 ) '1'
+			( 2 ) '1'
+		Translation : System.Single[]
+			===
+			( 0 ) '0'
+			( 1 ) '0'
+			( 2 ) '0'
+		Name        : Z_UP
+	( 1 ) [Node]
+		Matrix      : System.Single[]
+			===
+			1	0	0	0	
+			0	1	0	0	
+			0	0	1	0	
+			0	0.25	0	1	
+		Mesh        : 0
+		Rotation    : System.Single[]
+			===
+			( 0 ) '0'
+			( 1 ) '0'
+			( 2 ) '0'
+			( 3 ) '1'
+		Scale       : System.Single[]
+			===
+			( 0 ) '1'
+			( 1 ) '1'
+			( 2 ) '1'
+		Translation : System.Single[]
+			===
+			( 0 ) '0'
+			( 1 ) '0'
+			( 2 ) '0'
+		Name        : 152_BasicWallWallExt_215Bwk285815
+Scene       : 0
+Scenes      : glTFLoader.Schema.Scene[]
+	===
+	( 0 ) [Scene]
+		Nodes : System.Int32[]
+			===
+			( 0 ) '0'
+
