@@ -2,6 +2,9 @@
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 * text=auto
+*.gltf binary
+*.gltf merge=text
+
 
 ###############################################################################
 # Set default behavior for command prompt diff.
