@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2037
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xbim.XbimGLTF.IO", "Xbim.XbimGLTF.IO\Xbim.XbimGLTF.IO.csproj", "{11755BB4-23CF-4A71-9443-FB1E752CB53D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xbim.GLTF", "Xbim.XbimGLTF.IO\Xbim.GLTF.csproj", "{11755BB4-23CF-4A71-9443-FB1E752CB53D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

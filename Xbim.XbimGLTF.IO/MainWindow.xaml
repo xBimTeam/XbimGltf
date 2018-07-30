@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="Xbim.XbimGLTF.IO.MainWindow"
+﻿<UserControl x:Class="Xbim.GLTF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Xbim.XbimGLTF.IO"
+        xmlns:local="clr-namespace:Xbim.GLTF"
         mc:Ignorable="d"
         >
     <Grid>
@@ -15,6 +15,8 @@
             <Button Content="Mesh Model" Height="24" Margin="10,5" Click="GetModel" />
             <Button Content="Open Model" Height="24" Margin="10,5" Click="OpenModel" />
             <Button Content="Try mesh" Height="24" Margin="10,5" Click="TryMesh" />
+            <Button Content="Convert to Bin" Height="24" Margin="10,5" Click="ToBin" />
+            <Button Content="Convert to Text" Height="24" Margin="10,5" Click="ToText" />
         </StackPanel>
         <StackPanel Margin="20" Grid.Column="1" >
             <Button Content="Base64 Code sample" Height="24" Margin="10,5" Click="Button_Click" />

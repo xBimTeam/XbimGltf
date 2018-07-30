@@ -3,7 +3,7 @@ using System.IO;
 using Xbim.Common.Geometry;
 using Xbim.Common.XbimExtensions;
 
-namespace User
+namespace Xbim.Geom
 {
     class XbimMesher
     {
