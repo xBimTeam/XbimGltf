@@ -60,14 +60,22 @@ namespace Xbim.Geom
             return ret;
         }
 
-        internal void AddShape(IGeometryStoreReader geomReader, XbimShapeInstance shapeInstance)
+        public enum CoordinatesMode {
+            IncludeShapeTransform,
+            IgnoreShapeTransform
+        }
+
+        internal void AddShape(IGeometryStoreReader geomReader, XbimShapeInstance shapeInstance, CoordinatesMode mode)
         {
             // XbimMatrix3D modelTransform = XbimMatrix3D.Identity;
             IXbimShapeGeometryData shapeGeom = geomReader.ShapeGeometry(shapeInstance.ShapeGeometryLabel);
             if (shapeGeom.Format != (byte)XbimGeometryType.PolyhedronBinary)
                 return;
             // var transform = XbimMatrix3D.Multiply(, modelTransform);
-            AddMesh(shapeGeom.ShapeData, shapeInstance.Transformation);
+            if (mode == CoordinatesMode.IncludeShapeTransform)
+                AddMesh(shapeGeom.ShapeData, shapeInstance.Transformation);
+            else
+                AddMesh(shapeGeom.ShapeData);
         }
         
         internal void AddMesh(byte[] mesh, XbimMatrix3D? transform = null)

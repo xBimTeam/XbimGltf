@@ -10,6 +10,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Margin="20" >
             <Button Content="Mesh Model" Height="24" Margin="10,5" Click="GetModel" />
@@ -22,6 +23,9 @@
             <Button Content="Base64 Code sample" Height="24" Margin="10,5" Click="Button_Click" />
             <Button Content="MakeTriangle" Height="24" Margin="10,5" Click="MakeTriangle_Click" />
             <Button Content="Lib test" Height="24" Margin="10,5" Click="libtest_Click" />
+        </StackPanel>
+        <StackPanel Margin="20" Grid.Column="2" >
+            <Button Content="Open xbims" Height="24" Margin="10,5" Click="XbimsRead" />
         </StackPanel>
     </Grid>
 </UserControl>

@@ -24,15 +24,32 @@ namespace Xbim.GLTF
         List<gltf.Mesh> _meshes = new List<gltf.Mesh>();
         List<gltf.Node> _nodes = new List<gltf.Node>();
 
-        // signletons
+        // singletons
         gltf.Scene _scene = new gltf.Scene();
         gltf.Buffer _buffer = new gltf.Buffer();
         gltf.Node _topNode = new gltf.Node();
+
+        gltf.BufferView _eabBv; // ELEMENT_ARRAY_BUFFER bufferview
+        gltf.BufferView _abBv; // ARRAY_BUFFER bufferview
+
 
         public Builder()
         {
             InitMaterials();
             InitScene();
+            InitBufferViews();
+        }
+
+        private void InitBufferViews()
+        {
+            _eabBv = new gltf.BufferView();
+            _eabBv.Buffer = 0;
+            _eabBv.Target = gltf.BufferView.TargetEnum.ELEMENT_ARRAY_BUFFER;
+
+            _abBv = new gltf.BufferView();
+            _abBv.Buffer = 0;
+            _abBv.Target = gltf.BufferView.TargetEnum.ARRAY_BUFFER;
+            _abBv.ByteStride = 12; // todo: what is this number?
         }
 
         private void InitScene()
@@ -214,10 +231,6 @@ namespace Xbim.GLTF
 
             // this needs to open a previously meshed xbim file.
             //
-            
-
-            List<XbimMesher> mshs = new List<XbimMesher>();
-
             var s = new Stopwatch();
             s.Start();
             int iCnt = 0;
@@ -232,11 +245,47 @@ namespace Xbim.GLTF
                 {
                     PrepareStyleMaterial(model, styleId);
                 }
-
+                int productLabel = 0;
                 var shapeInstances = GetShapeInstancesToRender(geomReader, excludedTypes);
                 // foreach (var shapeInstance in shapeInstances.OrderBy(x=>x.IfcProductLabel))
                 foreach (var shapeInstance in shapeInstances.OrderBy(x => x.IfcProductLabel))
                 {
+                    // a product (e.g. wall or window) in the scene returns:
+                    // - a node
+                    //   - pointing to a mesh, with a transform
+                    // - 1 mesh
+                    //   - with as many mesh primitives as needed to render the different parts
+                    //   - pointers to the a material and accessors as needed
+                    // - 3 accessors per primitive
+                    //   - vertices, normals, indices
+                    // - bufferviews can be reused by different accessors
+                    // - data in the buffer, of course
+
+                    if (productLabel != shapeInstance.IfcProductLabel)
+                    {
+                        // need new product
+
+                        // create node
+                        var nodeIndex = _nodes.Count;
+                        var entity = model.Instances[shapeInstance.IfcProductLabel] as IIfcProduct;
+                        if (entity == null)
+                        { // fire error here. 
+                        }
+                        var tnode = new gltf.Node();
+                        tnode.Name = entity.Name  + $" #{entity.EntityLabel}";
+                        tnode.Matrix = GetTransformInMeters(model, shapeInstance);
+                        
+                        // create mesh
+                        var meshIndex = _meshes.Count;
+                        var mesh = new gltf.Mesh();
+                        mesh.Name = "Instance";
+
+
+                        // link node to mesh
+                        tnode.Mesh = meshIndex;
+                    }
+                    
+
                     IXbimShapeGeometryData shapeGeom = geomReader.ShapeGeometry(shapeInstance.ShapeGeometryLabel);
                     if (shapeGeom.Format != (byte)XbimGeometryType.PolyhedronBinary)
                         continue;
@@ -255,11 +304,9 @@ namespace Xbim.GLTF
                         styleDic.Add(colId, materialIndex);
                     }
 
-                    // xxx todo: restart from here
-                    continue;
-                   
+                    // note: at a first investigation it looks like the shapeInstance.Transformation is the same for all shapes of the same product
 
-                    if (true && shapeGeom.ReferenceCount > 1)
+                    if (false && shapeGeom.ReferenceCount > 1)
                     {
                         // repeat the map multiple times
                         //
@@ -285,11 +332,8 @@ namespace Xbim.GLTF
 
                         if (osgGeom != null)
                         {
-                            var arr = shapeInstance.Transformation.ToDoubleArray();
-                            arr[12] /= model.ModelFactors.OneMeter;
-                            arr[13] /= model.ModelFactors.OneMeter;
-                            arr[14] /= model.ModelFactors.OneMeter;
-
+                            var arr = GetTransformInMeters(model, shapeInstance);
+                            
                             // todo: add to the model
                             // var osgTransform = osgControl.AddTransform(osgGeom, ref arr);
 
@@ -301,8 +345,11 @@ namespace Xbim.GLTF
                         // repeat the geometry only once
                         //
                         var xbimMesher = new XbimMesher();
-                        xbimMesher.AddShape(geomReader, shapeInstance);
-                        mshs.Add(xbimMesher);
+                        xbimMesher.AddShape(geomReader, shapeInstance, XbimMesher.CoordinatesMode.IgnoreShapeTransform);
+                        var trsf = GetTransformInMeters(model, shapeInstance);
+
+
+                        // mshs.Add(xbimMesher);
 
 
                         // todo: add to the model
@@ -322,6 +369,15 @@ namespace Xbim.GLTF
             Debug.WriteLine($"added {iCnt} elements in {s.ElapsedMilliseconds}ms.");
 
 
+        }
+
+        private static float[] GetTransformInMeters(IModel model, XbimShapeInstance shapeInstance)
+        {
+            var arr = shapeInstance.Transformation.ToFloatArray();
+            arr[12] /= (float)model.ModelFactors.OneMeter;
+            arr[13] /= (float)model.ModelFactors.OneMeter;
+            arr[14] /= (float)model.ModelFactors.OneMeter;
+            return arr;
         }
     }
 }

@@ -312,5 +312,47 @@ namespace Xbim.GLTF
                 glTFLoader.Interface.SaveModel(t, newName);
             }
         }
+
+        private void XbimsRead(object sender, RoutedEventArgs e)
+        {
+            var d = new DirectoryInfo(@"C:\Users\Claudio\Desktop");
+            var files = d.GetFiles("*.xbim", SearchOption.AllDirectories);
+            
+            foreach (var file in files)
+            {
+                using (var m = IfcStore.Open(file.FullName))
+                {
+                    using (var geomStore = m.GeometryStore)
+                    using (var geomReader = geomStore.BeginRead())
+                    {
+                        int sameobject = 0;
+                        int notIdentity = 0;
+                        int productLabel = 0;
+                        XbimMatrix3D t = XbimMatrix3D.Identity;
+                        var shapeInstances = geomReader.ShapeInstances.Where(s => s.RepresentationType == XbimGeometryRepresentationType.OpeningsAndAdditionsIncluded);
+                        foreach (var shapeInstance in shapeInstances.OrderBy(x => x.IfcProductLabel))
+                        {
+
+                            if (productLabel == shapeInstance.IfcProductLabel)
+                            {
+                                sameobject++;
+                                if (!shapeInstance.Transformation.Equals(t))
+                                {
+                                    
+                                }
+                            }
+                            productLabel = shapeInstance.IfcProductLabel;
+                            t = shapeInstance.Transformation;
+                            if (!t.Equals(XbimMatrix3D.Identity))
+                            {
+                                notIdentity++;
+                            }
+                        }
+                        Debug.WriteLine($"{file.FullName} same:{sameobject} notid:{notIdentity}");
+                    }
+                    m.Close();
+                }
+            }
+        }
     }
 }
