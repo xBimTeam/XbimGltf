@@ -29,10 +29,12 @@ namespace Xbim.GLTF
         gltf.Buffer _buffer = new gltf.Buffer();
         gltf.Node _topNode = new gltf.Node();
 
-        gltf.BufferView _eabBv; // ELEMENT_ARRAY_BUFFER bufferview
-        gltf.BufferView _abBv; // ARRAY_BUFFER bufferview
+        gltf.BufferView _indicesBv; // ELEMENT_ARRAY_BUFFER bufferview
+        gltf.BufferView _coordinatesBv; // ARRAY_BUFFER bufferview
 
-
+        List<Byte> _indicesBuffer; // ELEMENT_ARRAY_BUFFER bufferview
+        List<Byte> _coordinatesBuffer; // ARRAY_BUFFER bufferview
+        
         public Builder()
         {
             InitMaterials();
@@ -42,14 +44,14 @@ namespace Xbim.GLTF
 
         private void InitBufferViews()
         {
-            _eabBv = new gltf.BufferView();
-            _eabBv.Buffer = 0;
-            _eabBv.Target = gltf.BufferView.TargetEnum.ELEMENT_ARRAY_BUFFER;
+            _indicesBv = new gltf.BufferView();
+            _indicesBv.Buffer = 0;
+            _indicesBv.Target = gltf.BufferView.TargetEnum.ELEMENT_ARRAY_BUFFER;
 
-            _abBv = new gltf.BufferView();
-            _abBv.Buffer = 0;
-            _abBv.Target = gltf.BufferView.TargetEnum.ARRAY_BUFFER;
-            _abBv.ByteStride = 12; // todo: what is this number?
+            _coordinatesBv = new gltf.BufferView();
+            _coordinatesBv.Buffer = 0;
+            _coordinatesBv.Target = gltf.BufferView.TargetEnum.ARRAY_BUFFER;
+            _coordinatesBv.ByteStride = 12; // todo: what is this number?
         }
 
         private void InitScene()
@@ -223,11 +225,18 @@ namespace Xbim.GLTF
                             !excludedTypes.Contains(s.IfcTypeId));
             return shapeInstances;
         }
+
+        private class ShapeComponentIds
+        {
+            public int IndicesAccessorId;
+            public int VerticesAccessorId;
+            public int NormalsAccessorId;
+        }
         
 
         public void BuildInstancedScene(IModel model, List<Type> exclude = null, bool WantRefresh = false)
         {
-            Dictionary<int, object> geometries = new Dictionary<int, object>();
+            Dictionary<int, ShapeComponentIds> geometries = new Dictionary<int, ShapeComponentIds>();
 
             // this needs to open a previously meshed xbim file.
             //
@@ -250,6 +259,8 @@ namespace Xbim.GLTF
                 // foreach (var shapeInstance in shapeInstances.OrderBy(x=>x.IfcProductLabel))
                 foreach (var shapeInstance in shapeInstances.OrderBy(x => x.IfcProductLabel))
                 {
+                    // we start with a shape instance and then load its geometry.
+                    
                     // a product (e.g. wall or window) in the scene returns:
                     // - a node
                     //   - pointing to a mesh, with a transform
@@ -285,12 +296,16 @@ namespace Xbim.GLTF
                         tnode.Mesh = meshIndex;
                     }
                     
+                    // now the geometry
+                    //
+
 
                     IXbimShapeGeometryData shapeGeom = geomReader.ShapeGeometry(shapeInstance.ShapeGeometryLabel);
                     if (shapeGeom.Format != (byte)XbimGeometryType.PolyhedronBinary)
                         continue;
 
-                    // work out colour id
+                    // work out colour id; 
+                    // the colour is associated with the instance, not the geometry.
                     // positives are styles, negatives are types
                     var colId = shapeInstance.StyleLabel > 0
                         ? shapeInstance.StyleLabel
@@ -306,27 +321,24 @@ namespace Xbim.GLTF
 
                     // note: at a first investigation it looks like the shapeInstance.Transformation is the same for all shapes of the same product
 
-                    if (false && shapeGeom.ReferenceCount > 1)
+                    if (shapeGeom.ReferenceCount > 1)
                     {
-                        // repeat the map multiple times
+                        // retain the information to reuse the map multiple times
                         //
-                        // XbimGeom osgGeom = null;
+                        
                         // if g is not found in the dictionary then build it and add it
-                        object osgGeom;
+                        ShapeComponentIds osgGeom;
                         if (!geometries.TryGetValue(shapeGeom.ShapeLabel, out osgGeom))
                         {
-                            // mesh once
+                            // mesh 
                             var xbimMesher = new XbimMesher();
                             xbimMesher.AddMesh(shapeGeom.ShapeData);
 
-                            // todo: add to the model
-
-                            //osgGeom = osgControl.AddGeom(
-                            //    xbimMesher.PositionsAsDoubleList(model.ModelFactors.OneMeter),
-                            //    xbimMesher.Indices,
-                            //    xbimMesher.NormalsAsDoubleList(),
-                            //    color
-                            //    );
+                            osgGeom = AddGeom(
+                                xbimMesher.PositionsAsSingleList(model.ModelFactors.OneMeter),
+                                xbimMesher.Indices,
+                                xbimMesher.NormalsAsSingleList()
+                                );
                             geometries.Add(shapeGeom.ShapeLabel, osgGeom);
                         }
 
@@ -367,8 +379,122 @@ namespace Xbim.GLTF
                 }
             }
             Debug.WriteLine($"added {iCnt} elements in {s.ElapsedMilliseconds}ms.");
+        }
 
+        private ShapeComponentIds AddGeom(List<float> positions, List<int> indices, List<float> normals)
+        {
+            // indices
+            ShapeComponentIds ret = new ShapeComponentIds();
+            ret.IndicesAccessorId = AddIndices(indices, normals.Count);
+            ret.NormalsAccessorId = AddCoordinates(normals);
+            ret.VerticesAccessorId= AddCoordinates(positions);
+            return ret;
+        }
 
+        private int AddCoordinates(List<float> values)
+        {
+            // buffer preparation
+            int startingBufferPoisition = _coordinatesBuffer.Count;
+            _coordinatesBuffer.Capacity = startingBufferPoisition + values.Count * sizeof(float);
+
+            
+            // prepare to evaluate min max:
+            float[] min = new float[] { float.MaxValue, float.MaxValue, float.MaxValue };
+            float[] max = new float[] { float.MinValue, float.MinValue, float.MinValue };
+            
+
+            int i = 0;
+            foreach (var value in values)
+            {
+                // evaluate min/max
+                if (value < min[i])
+                    min[i] = value;
+                if (value > max[i])
+                    max[i] = value;
+                i++;
+                if (i > 2)
+                    i = 0;
+
+                // populate the buffer (previously expanded)
+                _coordinatesBuffer.AddRange(BitConverter.GetBytes(value));
+            }
+
+            var coordAccessor = new gltf.Accessor()
+            {
+                BufferView = 1,
+                ByteOffset = startingBufferPoisition,
+                ComponentType = gltf.Accessor.ComponentTypeEnum.FLOAT,
+                Normalized = false,
+                Count = values.Count / 3,
+                Type = gltf.Accessor.TypeEnum.VEC3,
+                Min = min,
+                Max = max
+            };
+
+            // index to return
+            var ret = _accessors.Count;
+            _accessors.Add(coordAccessor);
+            return ret;
+        }
+
+        private int AddIndices(List<int> indices, int elementsCount)
+        {
+            // evaulate min max
+            //
+            var MinMaxV = indices.Aggregate(new
+            {
+                MinV = int.MaxValue,
+                MaxV = int.MinValue
+            },
+                (accumulator, o) => new
+                {
+                    MinV = Math.Min(o, accumulator.MinV),
+                    MaxV = Math.Max(o, accumulator.MaxV)
+                });
+
+            var indAccessor = new gltf.Accessor
+            {
+                BufferView = 0,
+                ByteOffset = _indicesBuffer.Count,
+                Normalized = false,
+                Type = gltf.Accessor.TypeEnum.SCALAR,
+                Count = indices.Count,
+                Min = new float[] { MinMaxV.MinV },
+                Max = new float[] { MinMaxV.MaxV }
+            };
+
+            // depending on the count of positions and normals, we determine the index type
+            // 
+            Func<int, byte[]> ToBits;
+            var size = 0;
+            if (elementsCount <= Math.Pow(2, 8))
+            {
+                indAccessor.ComponentType = gltf.Accessor.ComponentTypeEnum.UNSIGNED_BYTE;
+                size = sizeof(byte);
+                ToBits = x => BitConverter.GetBytes((byte)x);
+            }
+            else if (elementsCount <= Math.Pow(2, 16))
+            {
+                indAccessor.ComponentType = gltf.Accessor.ComponentTypeEnum.UNSIGNED_SHORT;
+                size = sizeof(short);
+                ToBits = x => BitConverter.GetBytes((short)x);
+            }
+            else
+            {
+                indAccessor.ComponentType = gltf.Accessor.ComponentTypeEnum.UNSIGNED_INT;
+                size = sizeof(int);
+                ToBits = x => BitConverter.GetBytes((int)x);
+            }
+            var IndexSize = indices.Count * size;
+            List<byte> indicesBufferData = new List<byte>(IndexSize);
+            foreach (var index in indices)
+            {
+                indicesBufferData.AddRange(ToBits(index));
+            }
+            _indicesBuffer.AddRange(indicesBufferData);
+            var thisIndex = _accessors.Count;
+            _accessors.Add(indAccessor);
+            return thisIndex;
         }
 
         private static float[] GetTransformInMeters(IModel model, XbimShapeInstance shapeInstance)
