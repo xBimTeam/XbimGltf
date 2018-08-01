@@ -257,6 +257,7 @@ namespace Xbim.GLTF
                 int productLabel = 0;
                 var shapeInstances = GetShapeInstancesToRender(geomReader, excludedTypes);
                 // foreach (var shapeInstance in shapeInstances.OrderBy(x=>x.IfcProductLabel))
+                gltf.Mesh targetMesh = null;
                 foreach (var shapeInstance in shapeInstances.OrderBy(x => x.IfcProductLabel))
                 {
                     // we start with a shape instance and then load its geometry.
@@ -288,9 +289,10 @@ namespace Xbim.GLTF
                         
                         // create mesh
                         var meshIndex = _meshes.Count;
-                        var mesh = new gltf.Mesh();
-                        mesh.Name = "Instance";
-
+                        targetMesh = new gltf.Mesh
+                        {
+                            Name = $"Instance {productLabel}"
+                        };
 
                         // link node to mesh
                         tnode.Mesh = meshIndex;
@@ -345,15 +347,13 @@ namespace Xbim.GLTF
                         if (osgGeom != null)
                         {
                             var arr = GetTransformInMeters(model, shapeInstance);
-                            
-                            // todo: add to the model
-                            // var osgTransform = osgControl.AddTransform(osgGeom, ref arr);
-
-                            // geodes.Add(osgGeode);
+                            AddComponentsToMesh(targetMesh, osgGeom, materialIndex);
                         }
                     }
                     else
                     {
+                        // todo: resume from here!!!
+                        
                         // repeat the geometry only once
                         //
                         var xbimMesher = new XbimMesher();
@@ -379,6 +379,31 @@ namespace Xbim.GLTF
                 }
             }
             Debug.WriteLine($"added {iCnt} elements in {s.ElapsedMilliseconds}ms.");
+        }
+
+        private void AddComponentsToMesh(gltf.Mesh targetMesh, ShapeComponentIds osgGeom, int materialIndex)
+        {
+            gltf.MeshPrimitive thisPrimitive = new gltf.MeshPrimitive();
+            Dictionary<string, int> att = new Dictionary<string, int>();
+            att.Add("NORMAL", osgGeom.NormalsAccessorId);
+            att.Add("POSITION", osgGeom.VerticesAccessorId);
+            thisPrimitive.Attributes = att;
+            thisPrimitive.Indices = osgGeom.IndicesAccessorId;
+            thisPrimitive.Material = materialIndex;
+            thisPrimitive.Mode = gltf.MeshPrimitive.ModeEnum.TRIANGLES;
+
+
+            int initSize = targetMesh.Primitives.Length;
+            if (initSize == 0)
+            {
+                targetMesh.Primitives = new gltf.MeshPrimitive[] { thisPrimitive };
+            }
+            else
+            {
+                var concat = targetMesh.Primitives.ToList();
+                concat.Add(thisPrimitive);
+                targetMesh.Primitives = concat.ToArray();
+            }
         }
 
         private ShapeComponentIds AddGeom(List<float> positions, List<int> indices, List<float> normals)
