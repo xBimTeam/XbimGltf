@@ -37,6 +37,14 @@ namespace Xbim.GLTF
         
         public Builder()
         {
+            
+        }
+
+        private void Init()
+        {
+            _indicesBuffer = new List<byte>();
+            _coordinatesBuffer = new List<byte>();
+
             InitMaterials();
             InitScene();
             InitBufferViews();
@@ -47,11 +55,13 @@ namespace Xbim.GLTF
             _indicesBv = new gltf.BufferView();
             _indicesBv.Buffer = 0;
             _indicesBv.Target = gltf.BufferView.TargetEnum.ELEMENT_ARRAY_BUFFER;
+            _bufferViews.Add(_indicesBv);
 
             _coordinatesBv = new gltf.BufferView();
             _coordinatesBv.Buffer = 0;
             _coordinatesBv.Target = gltf.BufferView.TargetEnum.ARRAY_BUFFER;
             _coordinatesBv.ByteStride = 12; // todo: what is this number?
+            _bufferViews.Add(_coordinatesBv);
         }
 
         private void InitScene()
@@ -59,7 +69,7 @@ namespace Xbim.GLTF
             _scene = new gltf.Scene();
             _scene.Nodes = new[] { 0 };
 
-            _topNode = new glTFLoader.Schema.Node();
+            _topNode = new gltf.Node();
             _topNode.Name = "Z_UP";
             _topNode.Matrix = new[]
             {
@@ -68,6 +78,7 @@ namespace Xbim.GLTF
                 0.0f,   1.0f,   0.0f,   0.0f,
                 0.0f,   0.0f,   0.0f,   1.0f
             };
+            _nodes.Add(_topNode);
         }
 
         private void InitMaterials()
@@ -135,7 +146,7 @@ namespace Xbim.GLTF
             gltf.Asset = new glTFLoader.Schema.Asset()
             {
                 Generator = "Xbim.GLTF.IO",
-                Version = "0.1"
+                Version = "2.0"
             };
             return gltf;
         }
@@ -143,7 +154,29 @@ namespace Xbim.GLTF
         public gltf.Gltf Build()
         {
             var gltf = CreateModel();
-            
+
+            // coordinates of bufferviews in buffer
+            _coordinatesBv.ByteLength = _coordinatesBuffer.Count;
+            _coordinatesBv.ByteOffset = 0;
+            _indicesBv.ByteLength = _indicesBuffer.Count;
+            _indicesBv.ByteOffset = _coordinatesBuffer.Count;
+
+            // buffers
+            _buffer.ByteLength = _indicesBuffer.Count + _coordinatesBuffer.Count;
+            var sb = new StringBuilder();
+            sb.Append("data:application/octet-stream;base64,");
+            if (true)
+            {
+                _coordinatesBuffer.AddRange(_indicesBuffer);
+                sb.Append(Convert.ToBase64String(_coordinatesBuffer.ToArray()));
+            }
+            else
+            {
+                sb.Append(Convert.ToBase64String(_coordinatesBuffer.ToArray()));
+                sb.Append(Convert.ToBase64String(_indicesBuffer.ToArray()));
+            }
+            _buffer.Uri = sb.ToString();
+
             // lists
             gltf.Materials = _materials.ToArray();
             if (_accessors.Any())
@@ -158,10 +191,18 @@ namespace Xbim.GLTF
             // singletons
             gltf.Scenes = new glTFLoader.Schema.Scene[] { _scene };
             gltf.Buffers = new glTFLoader.Schema.Buffer[] { _buffer };
-            
             gltf.Scene = 0;
+
+            int[] nodes = new int[_nodes.Count - 1];
+            for (int i = 1; i < _nodes.Count; i++)
+            {
+                nodes[i - 1] = i;
+            }
+            _topNode.Children = nodes;
             return gltf;
         }
+
+        
 
         static readonly XbimColourMap _colourMap = new XbimColourMap();
 
@@ -234,8 +275,9 @@ namespace Xbim.GLTF
         }
         
 
-        public void BuildInstancedScene(IModel model, List<Type> exclude = null, bool WantRefresh = false)
+        public gltf.Gltf BuildInstancedScene(IModel model, List<Type> exclude = null, bool WantRefresh = false)
         {
+            Init();
             Dictionary<int, ShapeComponentIds> geometries = new Dictionary<int, ShapeComponentIds>();
 
             // this needs to open a previously meshed xbim file.
@@ -296,6 +338,10 @@ namespace Xbim.GLTF
 
                         // link node to mesh
                         tnode.Mesh = meshIndex;
+
+                        // add all to lists
+                        _nodes.Add(tnode);
+                        _meshes.Add(targetMesh);
                     }
                     
                     // now the geometry
@@ -329,56 +375,50 @@ namespace Xbim.GLTF
                         //
                         
                         // if g is not found in the dictionary then build it and add it
-                        ShapeComponentIds osgGeom;
-                        if (!geometries.TryGetValue(shapeGeom.ShapeLabel, out osgGeom))
+                        ShapeComponentIds components;
+                        if (!geometries.TryGetValue(shapeGeom.ShapeLabel, out components))
                         {
                             // mesh 
                             var xbimMesher = new XbimMesher();
                             xbimMesher.AddMesh(shapeGeom.ShapeData);
 
-                            osgGeom = AddGeom(
+                            components = AddGeom(
                                 xbimMesher.PositionsAsSingleList(model.ModelFactors.OneMeter),
                                 xbimMesher.Indices,
                                 xbimMesher.NormalsAsSingleList()
                                 );
-                            geometries.Add(shapeGeom.ShapeLabel, osgGeom);
+                            geometries.Add(shapeGeom.ShapeLabel, components);
                         }
 
-                        if (osgGeom != null)
+                        if (components != null)
                         {
                             var arr = GetTransformInMeters(model, shapeInstance);
-                            AddComponentsToMesh(targetMesh, osgGeom, materialIndex);
+                            AddComponentsToMesh(targetMesh, components, materialIndex);
                         }
                     }
                     else
                     {
-                        // todo: resume from here!!!
-                        
                         // repeat the geometry only once
                         //
                         var xbimMesher = new XbimMesher();
-                        xbimMesher.AddShape(geomReader, shapeInstance, XbimMesher.CoordinatesMode.IgnoreShapeTransform);
+                        xbimMesher.AddMesh(shapeGeom.ShapeData);
                         var trsf = GetTransformInMeters(model, shapeInstance);
-
-
-                        // mshs.Add(xbimMesher);
-
-
-                        // todo: add to the model
-
-                        //var osgGeode = osgControl.AddGeode(
-                        //    xbimMesher.PositionsAsDoubleList(model.ModelFactors.OneMeter),
-                        //    xbimMesher.Indices,
-                        //    xbimMesher.NormalsAsDoubleList(),
-                        //    color
-                        //    );
-
+                        var components = AddGeom(
+                                xbimMesher.PositionsAsSingleList(model.ModelFactors.OneMeter),
+                                xbimMesher.Indices,
+                                xbimMesher.NormalsAsSingleList()
+                                );
+                        AddComponentsToMesh(targetMesh, components, materialIndex);
                     }
                     // frame refresh
                     iCnt++;
+                    if (iCnt % 100 == 0)
+                        Debug.WriteLine($"added {iCnt} elements in {s.ElapsedMilliseconds}ms.");
                 }
             }
             Debug.WriteLine($"added {iCnt} elements in {s.ElapsedMilliseconds}ms.");
+
+            return Build();
         }
 
         private void AddComponentsToMesh(gltf.Mesh targetMesh, ShapeComponentIds osgGeom, int materialIndex)
@@ -393,7 +433,9 @@ namespace Xbim.GLTF
             thisPrimitive.Mode = gltf.MeshPrimitive.ModeEnum.TRIANGLES;
 
 
-            int initSize = targetMesh.Primitives.Length;
+            int initSize = targetMesh.Primitives != null
+                ? targetMesh.Primitives.Length
+                : 0;
             if (initSize == 0)
             {
                 targetMesh.Primitives = new gltf.MeshPrimitive[] { thisPrimitive };
@@ -410,7 +452,7 @@ namespace Xbim.GLTF
         {
             // indices
             ShapeComponentIds ret = new ShapeComponentIds();
-            ret.IndicesAccessorId = AddIndices(indices, normals.Count);
+            ret.IndicesAccessorId = AddIndices(indices);
             ret.NormalsAccessorId = AddCoordinates(normals);
             ret.VerticesAccessorId= AddCoordinates(positions);
             return ret;
@@ -462,7 +504,7 @@ namespace Xbim.GLTF
             return ret;
         }
 
-        private int AddIndices(List<int> indices, int elementsCount)
+        private int AddIndices(List<int> indices)
         {
             // evaulate min max
             //
@@ -477,9 +519,45 @@ namespace Xbim.GLTF
                     MaxV = Math.Max(o, accumulator.MaxV)
                 });
 
+
+            gltf.Accessor.ComponentTypeEnum ct = gltf.Accessor.ComponentTypeEnum.BYTE;
+            // depending on the count of positions and normals, we determine the index type
+            // 
+            Func<int, byte[]> ToBits;
+            var size = 0;
+            if (MinMaxV.MaxV <= Math.Pow(2, 8))
+            {
+                ct = gltf.Accessor.ComponentTypeEnum.UNSIGNED_BYTE;
+                size = sizeof(byte);
+                ToBits = x => new byte[] { (byte)x };
+            }
+            else if (MinMaxV.MaxV <= Math.Pow(2, 16))
+            {
+                ct = gltf.Accessor.ComponentTypeEnum.UNSIGNED_SHORT;
+                size = sizeof(short);
+                ToBits = x => BitConverter.GetBytes((short)x);
+            }
+            else
+            {
+                ct = gltf.Accessor.ComponentTypeEnum.UNSIGNED_INT;
+                size = sizeof(int);
+                ToBits = x => BitConverter.GetBytes((int)x);
+            }
+
+            // the offset position needs to be a multiple of the size
+            // (this is from a warning we received in beta testing)
+            // so we inject some padding when needed
+            //
+            var padding = _indicesBuffer.Count % size;
+            for (int i = 0; i < padding; i++)
+            {
+                _indicesBuffer.Add(0);
+            }
+            
             var indAccessor = new gltf.Accessor
             {
                 BufferView = 0,
+                ComponentType = ct, 
                 ByteOffset = _indicesBuffer.Count,
                 Normalized = false,
                 Type = gltf.Accessor.TypeEnum.SCALAR,
@@ -488,33 +566,12 @@ namespace Xbim.GLTF
                 Max = new float[] { MinMaxV.MaxV }
             };
 
-            // depending on the count of positions and normals, we determine the index type
-            // 
-            Func<int, byte[]> ToBits;
-            var size = 0;
-            if (elementsCount <= Math.Pow(2, 8))
-            {
-                indAccessor.ComponentType = gltf.Accessor.ComponentTypeEnum.UNSIGNED_BYTE;
-                size = sizeof(byte);
-                ToBits = x => BitConverter.GetBytes((byte)x);
-            }
-            else if (elementsCount <= Math.Pow(2, 16))
-            {
-                indAccessor.ComponentType = gltf.Accessor.ComponentTypeEnum.UNSIGNED_SHORT;
-                size = sizeof(short);
-                ToBits = x => BitConverter.GetBytes((short)x);
-            }
-            else
-            {
-                indAccessor.ComponentType = gltf.Accessor.ComponentTypeEnum.UNSIGNED_INT;
-                size = sizeof(int);
-                ToBits = x => BitConverter.GetBytes((int)x);
-            }
             var IndexSize = indices.Count * size;
             List<byte> indicesBufferData = new List<byte>(IndexSize);
             foreach (var index in indices)
             {
-                indicesBufferData.AddRange(ToBits(index));
+                var lst = ToBits(index);
+                indicesBufferData.AddRange(lst);
             }
             _indicesBuffer.AddRange(indicesBufferData);
             var thisIndex = _accessors.Count;

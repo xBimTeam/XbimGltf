@@ -255,6 +255,8 @@ namespace Xbim.GLTF
 
         IfcStore _model = null;
 
+        string _gltfOutName = "";
+
         private void OpenModel(object sender, RoutedEventArgs e)
         {
             if (_model != null)
@@ -262,10 +264,16 @@ namespace Xbim.GLTF
                 _model.Close();
                 _model.Dispose();
             }
-            _model = IfcStore.Open("model.xbim");
+            // _model = IfcStore.Open("model.xbim");
+            var modelName = @"C:\Users\Claudio\Dropbox (Northumbria University)\_Courseware\2017-18\Semester 2\KB7038\materials\Duplex\Duplex_A_20110907.xBIM";
+            modelName = @"C:\Users\Claudio\Dropbox (Northumbria University)\Projects\uniZite\BIM model\ARK 0-00-A-200-X-01.xbim";
+            //modelName = @"C:\Users\Claudio\Dropbox (Northumbria University)\Projects\uniZite\BIM model\Hadsel Bygg B VVS.xbim";
+            
+            _model = IfcStore.Open(modelName);
+            _gltfOutName = Path.ChangeExtension(modelName, "gltf");
         }
-       
-       
+
+
         private static void AddMesh(gltf.Gltf gltf, XbimMesher mesh)
         {
             gltf.Buffers = new glTFLoader.Schema.Buffer[1];
@@ -282,9 +290,9 @@ namespace Xbim.GLTF
         private void TryMesh(object sender, RoutedEventArgs e)
         {
             var bldr = new Builder();
-            bldr.BuildInstancedScene(_model);
-            var ret = bldr.Build();
-            glTFLoader.Interface.SaveModel(ret, "out.gltf");
+            var ret = bldr.BuildInstancedScene(_model);
+            // var ret = bldr.Build();
+            glTFLoader.Interface.SaveModel(ret, _gltfOutName);
         }
 
         private void ToBin(object sender, RoutedEventArgs e)
@@ -308,7 +316,7 @@ namespace Xbim.GLTF
             foreach (var file in files)
             {
                 var t = glTFLoader.Interface.LoadModel(file.FullName);
-                var newName = Path.ChangeExtension(file.FullName, ".tst");
+                var newName = Path.ChangeExtension(file.FullName, ".2.gltf");
                 glTFLoader.Interface.SaveModel(t, newName);
             }
         }
