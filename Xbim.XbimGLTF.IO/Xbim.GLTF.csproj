@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{11755BB4-23CF-4A71-9443-FB1E752CB53D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Xbim.Gltf</RootNamespace>
+    <RootNamespace>Xbim.GLTF</RootNamespace>
     <AssemblyName>Xbim.Gltf</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -121,6 +121,9 @@
     </ApplicationDefinition>
     <Compile Include="Builder.cs" />
     <Compile Include="XbimMesher.cs" />
+    <Compile Include="XplorerGltfExporter\XplorerGltfExporter.xaml.cs">
+      <DependentUpon>XplorerGltfExporter.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -133,10 +136,20 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="XplorerGltfExporter\XplorerGltfExporter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
+    </Compile>
+	<Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedFileVersionInfo.cs">
+      <Link>Properties\SharedFileVersionInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -165,6 +178,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <Year>$([System.DateTime]::Now.ToString("yy"))</Year>
+    <Month>$([System.DateTime]::Now.ToString("MM"))</Month>
+    <Day>$([System.DateTime]::Now.ToString("dd"))</Day>
+    <Minute>$([System.Int32]::Parse($([System.DateTime]::Now.ToString("mm"))))</Minute>
+    <Hour>$([System.Int32]::Parse($([System.DateTime]::Now.ToString("HH"))))</Hour>
+    <MinuteOfDay>$([MSBuild]::Add($(Minute),$([MSBuild]::Multiply($(Hour),60))))</MinuteOfDay>
+    <HalfMinuteOfDay>$([System.Convert]::ToInt16($([MSBuild]::Divide($(MinuteOfDay), 2))))</HalfMinuteOfDay>
+    <AssemblyFileVersionAttribute>[assembly:System.Reflection.AssemblyFileVersion("4.0.$(Year)$(Month).$(Day)$(HalfMinuteOfDay)")];</AssemblyFileVersionAttribute>
+  </PropertyGroup>
+  <Target Name="BeforeBuild">
+    <WriteLinesToFile File="..\SharedFileVersionInfo.cs" Lines="$(AssemblyFileVersionAttribute)" Overwrite="true" Encoding="Unicode" />
+  </Target>
   <Import Project="..\packages\Xbim.Geometry.4.0.15-V0039\build\Xbim.Geometry.targets" Condition="Exists('..\packages\Xbim.Geometry.4.0.15-V0039\build\Xbim.Geometry.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
