@@ -32,8 +32,8 @@ namespace Xbim.GLTF
         gltf.BufferView _indicesBv; // ELEMENT_ARRAY_BUFFER bufferview
         gltf.BufferView _coordinatesBv; // ARRAY_BUFFER bufferview
 
-        List<Byte> _indicesBuffer; // ELEMENT_ARRAY_BUFFER bufferview
-        List<Byte> _coordinatesBuffer; // ARRAY_BUFFER bufferview
+        List<byte> _indicesBuffer; // ELEMENT_ARRAY_BUFFER bufferview
+        List<byte> _coordinatesBuffer; // ARRAY_BUFFER bufferview
         
         public Builder()
         {
@@ -151,6 +151,8 @@ namespace Xbim.GLTF
             return gltf;
         }
 
+        public bool BufferInBase64 = true;
+
         public gltf.Gltf Build()
         {
             var gltf = CreateModel();
@@ -163,19 +165,21 @@ namespace Xbim.GLTF
 
             // buffers
             _buffer.ByteLength = _indicesBuffer.Count + _coordinatesBuffer.Count;
-            var sb = new StringBuilder();
-            sb.Append("data:application/octet-stream;base64,");
-            if (true)
+
+            if (BufferInBase64)
             {
+                var sb = new StringBuilder();
+                sb.Append("data:application/octet-stream;base64,");
                 _coordinatesBuffer.AddRange(_indicesBuffer);
                 sb.Append(Convert.ToBase64String(_coordinatesBuffer.ToArray()));
+                _buffer.Uri = sb.ToString();
             }
             else
             {
-                sb.Append(Convert.ToBase64String(_coordinatesBuffer.ToArray()));
-                sb.Append(Convert.ToBase64String(_indicesBuffer.ToArray()));
+                _coordinatesBuffer.AddRange(_indicesBuffer);
+                // var fname = $"{Guid.NewGuid().ToString()}.bin";
+                // _buffer.Uri = fname;
             }
-            _buffer.Uri = sb.ToString();
 
             // lists
             gltf.Materials = _materials.ToArray();
@@ -226,6 +230,16 @@ namespace Xbim.GLTF
 
         Dictionary<int, int> styleDic = new Dictionary<int, int>();
 
+        /// <summary>
+        /// If true, this flat ensures that minimum 16 bits are used in the creation of indices.
+        /// The flat is set to true by default.
+        /// Rationale from feedback received is that: 
+        /// "Despite the moderate size increase, it would preferable to use 16-bit indices rather than 8-bit indices. 
+        /// Because modern APIs don’t actually support 8-bit vertex indices, these must be converted at runtime to 16-bits, 
+        /// causing a net increase in runtime memory usage versus just storing them as 16 bits."
+        /// </summary>
+        public bool Prevent8bitIndices = true;
+
         private void PrepareStyleMaterial(IModel model, int styleId)
         {
             if (styleDic.ContainsKey(styleId))
@@ -258,13 +272,31 @@ namespace Xbim.GLTF
             _materials.Add(CreateMaterial(name, r, g, b, a));
         }
 
-        static private IEnumerable<XbimShapeInstance> GetShapeInstancesToRender(IGeometryStoreReader geomReader, HashSet<short> excludedTypes)
+        static private IEnumerable<XbimShapeInstance> GetShapeInstancesToRender(IGeometryStoreReader geomReader, HashSet<short> excludedTypes, HashSet<int> EntityLebels = null)
         {
-            var shapeInstances = geomReader.ShapeInstances
-                .Where(s => s.RepresentationType == XbimGeometryRepresentationType.OpeningsAndAdditionsIncluded
-                            &&
-                            !excludedTypes.Contains(s.IfcTypeId));
-            return shapeInstances;
+            if (EntityLebels == null)
+            {
+                var shapeInstances = geomReader.ShapeInstances
+                    .Where(s => 
+                        s.RepresentationType == XbimGeometryRepresentationType.OpeningsAndAdditionsIncluded
+                        &&
+                        !excludedTypes.Contains(s.IfcTypeId));
+                return shapeInstances;
+            }
+            var entityFilter = geomReader.ShapeInstances
+                    .Where(s => 
+                        s.RepresentationType == XbimGeometryRepresentationType.OpeningsAndAdditionsIncluded
+                        &&
+                        !excludedTypes.Contains(s.IfcTypeId)
+                        &&
+                        EntityLebels.Contains(s.IfcProductLabel)
+                        );
+            return entityFilter;
+        }
+
+        internal byte[] GetBuffer()
+        {
+            return _coordinatesBuffer.ToArray(); ;
         }
 
         private class ShapeComponentIds
@@ -273,14 +305,21 @@ namespace Xbim.GLTF
             public int VerticesAccessorId;
             public int NormalsAccessorId;
         }
-        
 
-        public gltf.Gltf BuildInstancedScene(IModel model, List<Type> exclude = null, bool WantRefresh = false)
+
+        /// <summary>
+        /// Exports a gltf file from a meshed model
+        /// </summary>
+        /// <param name="model">The model needs to have the geometry meshes already cached</param>
+        /// <param name="exclude">The types of elements that are going to be omitted (e.g. ifcSpaces).</param>
+        /// <param name="EntityLebels">Only entities in the collection are exported; if null exports the whole model</param>
+        /// <returns></returns>
+        public gltf.Gltf BuildInstancedScene(IModel model, List<Type> exclude = null, HashSet<int> EntityLebels = null)
         {
             Init();
             Dictionary<int, ShapeComponentIds> geometries = new Dictionary<int, ShapeComponentIds>();
 
-            // this needs to open a previously meshed xbim file.
+            // this needs a previously meshed xbim file.
             //
             var s = new Stopwatch();
             s.Start();
@@ -297,7 +336,7 @@ namespace Xbim.GLTF
                     PrepareStyleMaterial(model, styleId);
                 }
                 int productLabel = 0;
-                var shapeInstances = GetShapeInstancesToRender(geomReader, excludedTypes);
+                var shapeInstances = GetShapeInstancesToRender(geomReader, excludedTypes, EntityLebels);
                 // foreach (var shapeInstance in shapeInstances.OrderBy(x=>x.IfcProductLabel))
                 gltf.Mesh targetMesh = null;
                 foreach (var shapeInstance in shapeInstances.OrderBy(x => x.IfcProductLabel))
@@ -346,8 +385,6 @@ namespace Xbim.GLTF
                     
                     // now the geometry
                     //
-
-
                     IXbimShapeGeometryData shapeGeom = geomReader.ShapeGeometry(shapeInstance.ShapeGeometryLabel);
                     if (shapeGeom.Format != (byte)XbimGeometryType.PolyhedronBinary)
                         continue;
@@ -410,7 +447,6 @@ namespace Xbim.GLTF
                                 );
                         AddComponentsToMesh(targetMesh, components, materialIndex);
                     }
-                    // frame refresh
                     iCnt++;
                     if (iCnt % 100 == 0)
                         Debug.WriteLine($"added {iCnt} elements in {s.ElapsedMilliseconds}ms.");
@@ -525,7 +561,7 @@ namespace Xbim.GLTF
             // 
             Func<int, byte[]> ToBits;
             var size = 0;
-            if (MinMaxV.MaxV <= Math.Pow(2, 8))
+            if (!Prevent8bitIndices && MinMaxV.MaxV <= Math.Pow(2, 8))
             {
                 ct = gltf.Accessor.ComponentTypeEnum.UNSIGNED_BYTE;
                 size = sizeof(byte);

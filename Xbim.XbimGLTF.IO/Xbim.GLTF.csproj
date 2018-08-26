@@ -120,6 +120,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Builder.cs" />
+    <Compile Include="SemanticExport\BuildingEntity.cs" />
+    <Compile Include="SemanticExport\BuildingStorey.cs" />
+    <Compile Include="SemanticExport\BuildingSystem.cs" />
+    <Compile Include="SemanticExport\IfcInfo.cs" />
+    <Compile Include="SemanticExport\JsonIfcObject.cs" />
+    <Compile Include="SemanticExport\SemanticExport.cs" />
     <Compile Include="XbimMesher.cs" />
     <Compile Include="XplorerGltfExporter\XplorerGltfExporter.xaml.cs">
       <DependentUpon>XplorerGltfExporter.xaml</DependentUpon>
@@ -145,7 +151,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-	<Compile Include="..\SharedAssemblyInfo.cs">
+    <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\SharedFileVersionInfo.cs">

@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution 
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainTests", "MainTests\MainTests.csproj", "{2309990B-2BD5-4910-9252-2E909BF7ABDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{11755BB4-23CF-4A71-9443-FB1E752CB53D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11755BB4-23CF-4A71-9443-FB1E752CB53D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11755BB4-23CF-4A71-9443-FB1E752CB53D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2309990B-2BD5-4910-9252-2E909BF7ABDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2309990B-2BD5-4910-9252-2E909BF7ABDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2309990B-2BD5-4910-9252-2E909BF7ABDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2309990B-2BD5-4910-9252-2E909BF7ABDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

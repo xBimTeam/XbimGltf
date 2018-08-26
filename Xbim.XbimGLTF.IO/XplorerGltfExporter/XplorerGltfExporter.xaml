@@ -9,7 +9,7 @@
              Height="500"
              >
     <Grid>
-        <TabControl SelectionChanged="TabControl_SelectionChanged">
+        <TabControl>
             <TabItem Header="About" Visibility="{Binding OpenButtonVisibility}">
                 <StackPanel>
                     <TextBlock x:Name="PluginVersion" Margin="10" TextAlignment="Center" >PluginVersion</TextBlock>

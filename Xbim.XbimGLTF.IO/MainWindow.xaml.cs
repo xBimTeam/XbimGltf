@@ -260,6 +260,7 @@ namespace Xbim.GLTF
             
             _model = IfcStore.Open(modelName);
             _gltfOutName = Path.ChangeExtension(modelName, "gltf");
+
         }
 
 
@@ -279,9 +280,23 @@ namespace Xbim.GLTF
         private void TryMesh(object sender, RoutedEventArgs e)
         {
             var bldr = new Builder();
-            var ret = bldr.BuildInstancedScene(_model);
-            // var ret = bldr.Build();
-            glTFLoader.Interface.SaveModel(ret, _gltfOutName);
+
+            if (true)
+            {
+                bldr.BufferInBase64 = true;
+                var ret = bldr.BuildInstancedScene(_model);
+                // var ret = bldr.Build();
+
+                glTFLoader.Interface.SaveModel(ret, _gltfOutName);
+            }
+            else
+            {
+                // bin
+                bldr.BufferInBase64 = false;
+                var ret = bldr.BuildInstancedScene(_model);
+                var binName = Path.ChangeExtension(_gltfOutName, "gltfb");
+                glTFLoader.Interface.SaveBinaryModel(ret, bldr.GetBuffer(), binName);
+            }
         }
 
         private void ToBin(object sender, RoutedEventArgs e)

@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using Xbim.Common;
+using Xbim.GLTF;
 using Xbim.Presentation;
 using Xbim.Presentation.XplorerPluginSystem;
 
@@ -106,7 +107,11 @@ namespace Xbim.Gltf
         {
             if (Model == null)
                 return;
-
+                        
+            var bldr = new Builder();
+            var ret = bldr.BuildInstancedScene(Model);
+                        
+            // glTFLoader.Interface.SaveModel(ret, _gltfOutName);
         }
     }
 }
