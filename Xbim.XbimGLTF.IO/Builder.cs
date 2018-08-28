@@ -306,6 +306,14 @@ namespace Xbim.GLTF
             public int NormalsAccessorId;
         }
 
+        public delegate bool MeshingFilter(int elementId, IModel model);
+
+        /// <summary>
+        /// A custom function to determine the behaviour and deflection associated with individual items in the mesher.
+        /// Default properties can set in the Model.Modelfactors if the same deflection applies to all elements.
+        /// </summary>
+        public MeshingFilter CustomFilter;
+
 
         /// <summary>
         /// Exports a gltf file from a meshed model
@@ -341,6 +349,14 @@ namespace Xbim.GLTF
                 gltf.Mesh targetMesh = null;
                 foreach (var shapeInstance in shapeInstances.OrderBy(x => x.IfcProductLabel))
                 {
+
+                    if (CustomFilter != null)
+                    {
+                        var skip = CustomFilter(shapeInstance.IfcProductLabel, model);
+                        if (skip)
+                            continue;
+                    }
+
                     // we start with a shape instance and then load its geometry.
                     
                     // a product (e.g. wall or window) in the scene returns:

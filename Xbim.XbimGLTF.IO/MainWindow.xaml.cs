@@ -12,6 +12,8 @@ using Xbim.Common.Geometry;
 using Xbim.Ifc;
 using Xbim.ModelGeometry.Scene;
 using Xbim.Geom;
+using Xbim.Ifc4.Interfaces;
+using Xbim.Common;
 
 namespace Xbim.GLTF
 {
@@ -256,8 +258,10 @@ namespace Xbim.GLTF
             // _model = IfcStore.Open("model.xbim");
             var modelName = @"C:\Users\Claudio\Dropbox (Northumbria University)\_Courseware\2017-18\Semester 2\KB7038\materials\Duplex\Duplex_A_20110907.xBIM";
             modelName = @"C:\Users\Claudio\Dropbox (Northumbria University)\Projects\uniZite\BIM model\ARK 0-00-A-200-X-01.xbim";
+            modelName = @"C:\Users\sgmk2\Dropbox (Northumbria University)\Projects\uniZite\BIM model\ARK 0-00-A-200-X-01.xBIM";
+            // modelName = @"C:\Users\sgmk2\Dropbox (Northumbria University)\Projects\uniZite\BIM model\Hadsel Bygg B VVS.xbim";
             //modelName = @"C:\Users\Claudio\Dropbox (Northumbria University)\Projects\uniZite\BIM model\Hadsel Bygg B VVS.xbim";
-            
+
             _model = IfcStore.Open(modelName);
             _gltfOutName = Path.ChangeExtension(modelName, "gltf");
 
@@ -277,25 +281,65 @@ namespace Xbim.GLTF
             
         }
 
+
+        bool Filter(int elementId, IModel model)
+        {
+            return !elems.Contains(elementId);
+        }
+
+        int[] elems;
+
         private void TryMesh(object sender, RoutedEventArgs e)
         {
-            var bldr = new Builder();
+            
+            FileInfo f = new FileInfo(_gltfOutName);
+            var dir = f.Directory;
 
             if (true)
             {
-                bldr.BufferInBase64 = true;
-                var ret = bldr.BuildInstancedScene(_model);
-                // var ret = bldr.Build();
+                // var storey = _model.Instances.OfType<IIfcBuildingStorey>().FirstOrDefault();
+                //
+                foreach (var storey in _model.Instances.OfType<IIfcBuildingStorey>())
+                {
+                    var rels = _model.Instances.OfType<IIfcRelContainedInSpatialStructure>().Where(x => x.RelatingStructure.EntityLabel == storey.EntityLabel);
+                    List<int> els = new List<int>();
+                    foreach (var rel in rels)
+                    {
+                        els.AddRange(rel.RelatedElements.Select(x => x.EntityLabel));
+                    }
+                    elems = els.ToArray();
 
-                glTFLoader.Interface.SaveModel(ret, _gltfOutName);
+                    var bldr = new Builder();
+                    // by storey
+                    bldr.BufferInBase64 = true;
+
+                    bldr.CustomFilter = this.Filter;
+
+                    var outName = Path.Combine(
+                        dir.FullName,
+                        f.Name + "." + storey.Name + ".gltf"
+                        );
+                    var ret = bldr.BuildInstancedScene(_model);
+                    glTFLoader.Interface.SaveModel(ret, outName);
+                }
             }
             else
             {
-                // bin
-                bldr.BufferInBase64 = false;
-                var ret = bldr.BuildInstancedScene(_model);
-                var binName = Path.ChangeExtension(_gltfOutName, "gltfb");
-                glTFLoader.Interface.SaveBinaryModel(ret, bldr.GetBuffer(), binName);
+                if (true)
+                {
+                    var bldr = new Builder();
+                    bldr.BufferInBase64 = true;
+                    var ret = bldr.BuildInstancedScene(_model);
+                    glTFLoader.Interface.SaveModel(ret, _gltfOutName);
+                }
+                else
+                {
+                    var bldr = new Builder();
+                    bldr.BufferInBase64 = false;
+                    var ret = bldr.BuildInstancedScene(_model);
+                    var binName = Path.ChangeExtension(_gltfOutName, "gltfb");
+                    glTFLoader.Interface.SaveBinaryModel(ret, bldr.GetBuffer(), binName);
+                }
             }
         }
 
