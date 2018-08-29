@@ -14,7 +14,7 @@ namespace MainTests
             // create file
             //
             BuildingModel m = new BuildingModel();
-            m.storeys.Add(new BuildingStorey("One", 10.3));
+            m.storeys.Add(new BuildingStorey(10.3));
             var fi = m.Export("file.json");
 
             // attempt reload

@@ -14,6 +14,7 @@ using Xbim.ModelGeometry.Scene;
 using Xbim.Geom;
 using Xbim.Ifc4.Interfaces;
 using Xbim.Common;
+using Xbim.GLTF.SemanticExport;
 
 namespace Xbim.GLTF
 {
@@ -257,10 +258,14 @@ namespace Xbim.GLTF
             }
             // _model = IfcStore.Open("model.xbim");
             var modelName = @"C:\Users\Claudio\Dropbox (Northumbria University)\_Courseware\2017-18\Semester 2\KB7038\materials\Duplex\Duplex_A_20110907.xBIM";
+
+            // on mac
             modelName = @"C:\Users\Claudio\Dropbox (Northumbria University)\Projects\uniZite\BIM model\ARK 0-00-A-200-X-01.xbim";
-            modelName = @"C:\Users\sgmk2\Dropbox (Northumbria University)\Projects\uniZite\BIM model\ARK 0-00-A-200-X-01.xBIM";
+            modelName = @"C:\Users\Claudio\Dropbox (Northumbria University)\Projects\uniZite\BIM model\Hadsel Bygg B VVS.xbim";
+
+            // at uni
+            // modelName = @"C:\Users\sgmk2\Dropbox (Northumbria University)\Projects\uniZite\BIM model\ARK 0-00-A-200-X-01.xBIM";
             // modelName = @"C:\Users\sgmk2\Dropbox (Northumbria University)\Projects\uniZite\BIM model\Hadsel Bygg B VVS.xbim";
-            //modelName = @"C:\Users\Claudio\Dropbox (Northumbria University)\Projects\uniZite\BIM model\Hadsel Bygg B VVS.xbim";
 
             _model = IfcStore.Open(modelName);
             _gltfOutName = Path.ChangeExtension(modelName, "gltf");
@@ -272,8 +277,6 @@ namespace Xbim.GLTF
         {
             gltf.Buffers = new glTFLoader.Schema.Buffer[1];
             var buf = new glTFLoader.Schema.Buffer();
-
-            
 
             gltf.Buffers[0] = buf;
 
@@ -301,6 +304,7 @@ namespace Xbim.GLTF
                 //
                 foreach (var storey in _model.Instances.OfType<IIfcBuildingStorey>())
                 {
+                    // prepare filter
                     var rels = _model.Instances.OfType<IIfcRelContainedInSpatialStructure>().Where(x => x.RelatingStructure.EntityLabel == storey.EntityLabel);
                     List<int> els = new List<int>();
                     foreach (var rel in rels)
@@ -309,18 +313,26 @@ namespace Xbim.GLTF
                     }
                     elems = els.ToArray();
 
+                    // write gltf
+                    //
                     var bldr = new Builder();
-                    // by storey
                     bldr.BufferInBase64 = true;
-
                     bldr.CustomFilter = this.Filter;
 
                     var outName = Path.Combine(
                         dir.FullName,
                         f.Name + "." + storey.Name + ".gltf"
                         );
-                    var ret = bldr.BuildInstancedScene(_model);
-                    glTFLoader.Interface.SaveModel(ret, outName);
+                    //var ret = bldr.BuildInstancedScene(_model);
+                    //glTFLoader.Interface.SaveModel(ret, outName);
+
+                    // write json
+                    //
+                    var jsonFileName = Path.ChangeExtension(outName, "json");
+                    var bme = new BuildingModelExtractor();
+                    bme.CustomFilter = this.Filter;
+                    var rep = bme.GetModel(_model);
+                    rep.Export(jsonFileName);
                 }
             }
             else

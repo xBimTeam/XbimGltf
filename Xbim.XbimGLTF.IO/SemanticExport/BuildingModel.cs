@@ -17,7 +17,7 @@ namespace Xbim.GLTF.SemanticExport
 
         public string ifcSchemaVersion = "ifc2x3";
 
-        public List<BuildingEntity> entities = new List<BuildingEntity>();
+        public List<BuildingElement> elements = new List<BuildingElement>();
         
         public List<BuildingSystem> systems = new List<BuildingSystem>();
 
@@ -26,6 +26,8 @@ namespace Xbim.GLTF.SemanticExport
         public FileInfo Export(string v)
         {
             FileInfo f = new FileInfo(v);
+            if (f.Exists)
+                f.Delete();
             using (var stream = f.OpenWrite())
             {
                 SerializeToStream(this, stream);
