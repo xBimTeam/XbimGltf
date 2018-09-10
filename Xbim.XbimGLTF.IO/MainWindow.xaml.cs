@@ -125,11 +125,7 @@ namespace Xbim.GLTF
 
             try
             {
-                
-
-                var ind = new string('\t', indent);
-
-                
+                var ind = new string('\t', indent);               
                 var elems = instance as System.Collections.ICollection;
                 if (elems != null)
                 {
@@ -249,6 +245,8 @@ namespace Xbim.GLTF
 
         string _gltfOutName = "";
 
+        
+               
         private void OpenModel(object sender, RoutedEventArgs e)
         {
             if (_model != null)
@@ -269,6 +267,7 @@ namespace Xbim.GLTF
             // at uni
             // modelName = @"C:\Users\sgmk2\Dropbox (Northumbria University)\Projects\uniZite\BIM model\ARK 0-00-A-200-X-01.xBIM";
             // modelName = @"C:\Users\sgmk2\Dropbox (Northumbria University)\Projects\uniZite\BIM model\Hadsel Bygg B VVS.xbim";
+            modelName = @"C:\Users\sgmk2\Dropbox (Northumbria University)\Projects\uniZite\BIM model\VAMMA\Vamma12_RIE.xBIM";
 
             _model = IfcStore.Open(modelName);
             _gltfOutName = Path.ChangeExtension(modelName, "gltf");
@@ -280,13 +279,9 @@ namespace Xbim.GLTF
         {
             gltf.Buffers = new glTFLoader.Schema.Buffer[1];
             var buf = new glTFLoader.Schema.Buffer();
-
             gltf.Buffers[0] = buf;
-
             gltf.BufferViews = new gltf.BufferView[2];
-            
         }
-
 
         bool Filter(int elementId, IModel model)
         {
@@ -294,6 +289,57 @@ namespace Xbim.GLTF
         }
 
         int[] elems;
+
+        public void ExportByStorey(string fileName)
+        {
+            FileInfo f = new FileInfo(fileName);
+            var dir = f.Directory;
+            var ifcName = Path.ChangeExtension(fileName, "ifc");
+            using (var store = IfcStore.Open(ifcName))
+            {
+                var context = new Xbim3DModelContext(store);
+                context.CreateContext();
+
+                foreach (var storey in store.Instances.OfType<IIfcBuildingStorey>())
+                {
+                    // prepare filter
+                    var rels = store.Instances.OfType<IIfcRelContainedInSpatialStructure>().Where(x => x.RelatingStructure.EntityLabel == storey.EntityLabel);
+                    List<int> els = new List<int>();
+                    foreach (var rel in rels)
+                    {
+                        els.AddRange(rel.RelatedElements.Select(x => x.EntityLabel));
+                    }
+                    elems = els.ToArray();
+
+                    // write gltf
+                    //
+                    var bldr = new Builder();
+                    bldr.BufferInBase64 = true;
+                    bldr.CustomFilter = this.Filter;
+
+                    var outName = Path.Combine(
+                        dir.FullName,
+                        f.Name + "." + storey.Name + ".gltf"
+                        );
+                    var ret = bldr.BuildInstancedScene(store);
+                    if (ret != null)
+                    {
+                        // actual write if not empty model.
+                        //
+                        glTFLoader.Interface.SaveModel(ret, outName);
+
+                        // write json
+                        //
+                        var jsonFileName = Path.ChangeExtension(outName, "json");
+                        var bme = new BuildingModelExtractor();
+                        bme.CustomFilter = this.Filter;
+                        var rep = bme.GetModel(store);
+                        rep.Export(jsonFileName);
+                    }
+                }
+            }
+        }
+
 
         private void TryMesh(object sender, RoutedEventArgs e)
         {
@@ -428,6 +474,48 @@ namespace Xbim.GLTF
                     }
                     m.Close();
                 }
+            }
+        }
+
+        private void ConvertAll(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in GetModelList())
+            {
+                ExportByStorey(item);
+            }
+        }
+
+        private IEnumerable<string> GetModelList()
+        {
+            var folders = new string[]
+            {
+                @"C:\Users\Claudio\Dropbox (Northumbria University)\Projects\uniZite\",
+                @"C:\Users\sgmk2\Dropbox (Northumbria University)\Projects\uniZite\"
+            };
+
+            var folder = "";
+            foreach (var item in folders)
+            {
+                if (Directory.Exists(item))
+                {
+                    folder = item;
+                    break;
+                }
+            }
+
+            var files = new string[]
+            {
+                @"BIM model\ARK 0-00-A-200-X-01.xbim",
+                @"BIM model\Hadsel Bygg B VVS.xbim",
+                @"BIM model\VAMMA\Vamma12_ARK.xBIM",
+                @"BIM model\VAMMA\Vamma12_RIE.xBIM"
+            };
+
+            foreach (var item in files)
+            {
+                var fname = Path.Combine(folder, item);
+                if (File.Exists(fname))
+                    yield return fname;
             }
         }
     }

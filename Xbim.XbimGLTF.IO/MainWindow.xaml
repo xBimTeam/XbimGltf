@@ -7,25 +7,38 @@
         mc:Ignorable="d"
         >
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Margin="20" >
-            <Button Content="Mesh Model" Height="24" Margin="10,5" Click="GetModel" />
-            <Button Content="Open Model" Height="24" Margin="10,5" Click="OpenModel" />
-            <Button Content="Try mesh" Height="24" Margin="10,5" Click="TryMesh" />
-            <Button Content="Convert to Bin" Height="24" Margin="10,5" Click="ToBin" />
-            <Button Content="Convert to Text" Height="24" Margin="10,5" Click="ToText" />
-        </StackPanel>
-        <StackPanel Margin="20" Grid.Column="1" >
-            <Button Content="Base64 Code sample" Height="24" Margin="10,5" Click="Button_Click" />
-            <Button Content="MakeTriangle" Height="24" Margin="10,5" Click="MakeTriangle_Click" />
-            <Button Content="Lib test" Height="24" Margin="10,5" Click="libtest_Click" />
-        </StackPanel>
-        <StackPanel Margin="20" Grid.Column="2" >
-            <Button Content="Open xbims" Height="24" Margin="10,5" Click="XbimsRead" />
-        </StackPanel>
+        <TabControl>
+            <TabItem Header="New">
+                <Grid>
+                    <Button Margin="20" Height="23" Content="Convert" Click="ConvertAll" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Old">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="20" >
+                        <Button Content="Mesh Model" Height="24" Margin="10,5" Click="GetModel" />
+                        <Button Content="Open Model" Height="24" Margin="10,5" Click="OpenModel" />
+                        <Button Content="Try mesh" Height="24" Margin="10,5" Click="TryMesh" />
+                        <Button Content="Convert to Bin" Height="24" Margin="10,5" Click="ToBin" />
+                        <Button Content="Convert to Text" Height="24" Margin="10,5" Click="ToText" />
+                    </StackPanel>
+                    <StackPanel Margin="20" Grid.Column="1" >
+                        <Button Content="Base64 Code sample" Height="24" Margin="10,5" Click="Button_Click" />
+                        <Button Content="MakeTriangle" Height="24" Margin="10,5" Click="MakeTriangle_Click" />
+                        <Button Content="Lib test" Height="24" Margin="10,5" Click="libtest_Click" />
+                    </StackPanel>
+                    <StackPanel Margin="20" Grid.Column="2" >
+                        <Button Content="Open xbims" Height="24" Margin="10,5" Click="XbimsRead" />
+                    </StackPanel>
+                </Grid>
+                
+            </TabItem>
+        </TabControl>
+        
     </Grid>
 </UserControl>

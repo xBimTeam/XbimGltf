@@ -76,7 +76,8 @@ namespace Xbim.GLTF.SemanticExport
                 // systems (prepares list and sets index, data extraction happens later)
                 if (elementToSystem.ContainsKey(element.EntityLabel))
                 {
-                    var system = model.Instances[element.EntityLabel] as IIfcSystem;
+                    var systemId = elementToSystem[element.EntityLabel];
+                    var system = model.Instances[systemId] as IIfcSystem;
                     if (system != null)
                     {
                         int index = systems.IndexOf(system);
@@ -93,7 +94,7 @@ namespace Xbim.GLTF.SemanticExport
                 m.elements.Add(el);
             }
 
-            // data extraction happens here
+            // data extraction for the dicionaries happens here
             foreach (var storey in storeys)
             {
                 var s = new BuildingStorey(
