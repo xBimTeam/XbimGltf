@@ -5,8 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Xbim.GLTF"
              mc:Ignorable="d" 
-             Width="300"
-             Height="500"
              >
     <Grid>
         <TabControl>
@@ -31,34 +29,67 @@
                     </TextBlock>
                 </StackPanel>
             </TabItem>
-            <TabItem x:Name="Browse" Header="Export" Visibility="{Binding UIVisibility}">
+            <TabItem Header="Export" Visibility="{Binding UIVisibility}">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="75*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                    <TabControl Margin="5,5,5,35">
+                        <TabItem Header="Whole model">
+                            <TextBlock Margin="5"  TextWrapping="WrapWithOverflow">Whole model export is the only option currently available. More options are under development.</TextBlock>
+                        </TabItem>
+                        <TabItem x:Name="Browse" Header="Selection" Visibility="Collapsed">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="75*"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
 
-                    <Label Grid.Column="0" Grid.Row="0" Content="Selection" VerticalAlignment="Center" />
-                    <Button Grid.Column="1"  Margin="5" Height="23" VerticalAlignment="Bottom" >Add current</Button>
-                    <ListView Grid.Column="1" Grid.Row="1" Margin="5" />
+                                <Label Grid.Column="0" Grid.Row="0" Content="Selection" VerticalAlignment="Center" />
+                                <Button Grid.Column="1"  Margin="5" Height="23" VerticalAlignment="Bottom" >Add current</Button>
+                                <ListView Grid.Column="1" Grid.Row="1" Margin="5" />
 
-                    <Button Grid.Row="2" Grid.Column="1"  Margin="5" Height="23" VerticalAlignment="Bottom" >Clear</Button>
+                                <Button Grid.Row="2" Grid.Column="1"  Margin="5" Height="23" VerticalAlignment="Bottom" >Clear</Button>
 
-                    <Label Grid.Column="0" Grid.Row="3" Content="Options" />
-                    <CheckBox Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" Margin="5">Export elements individually</CheckBox>
+                                <Label Grid.Column="0" Grid.Row="3" Content="Options" />
+                                <CheckBox Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" Margin="5">Export elements individually</CheckBox>
+                            </Grid>
+                        </TabItem>
+                        
+                    </TabControl>
 
                     <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="5" Height="23" VerticalAlignment="Bottom" FontWeight="Bold" Click="Button_Click" >Export</Button>
-
                 </Grid>
+             
             </TabItem>
-
+            <TabItem Header="License">
+                <StackPanel>
+                <TextBlock Margin="5" TextWrapping="WrapWithOverflow">
+                    This exporter makes use of the glTF C# reference library at https://github.com/KhronosGroup/glTF-CSharp-Loader<LineBreak/>
+                    <LineBreak/>
+                    In compliance with their license requiremnt, please find the following statement:                                
+                </TextBlock>
+                    <Border Margin="5" Background="GhostWhite" BorderBrush="Gainsboro" BorderThickness="1">
+                        <TextBlock TextWrapping="WrapWithOverflow" Margin="10" >
+                        This license is for the C# reference loader, not the rest of the repository.<LineBreak/>
+                        <LineBreak/>
+                        Copyright (c) 2015, Matthew and Xueru McMullan All rights reserved.<LineBreak/>
+                        <LineBreak/>
+                        Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:<LineBreak/>
+                        <LineBreak/>
+                        Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.<LineBreak/>
+                        <LineBreak/>
+                        Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.<LineBreak/>
+                        <LineBreak/>
+                        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+                        </TextBlock>
+                    </Border>
+                </StackPanel>
+            </TabItem>
         </TabControl>
     </Grid>
 </UserControl>

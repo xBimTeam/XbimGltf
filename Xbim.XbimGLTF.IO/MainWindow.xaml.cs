@@ -262,6 +262,9 @@ namespace Xbim.GLTF
             // on mac
             modelName = @"C:\Users\Claudio\Dropbox (Northumbria University)\Projects\uniZite\BIM model\ARK 0-00-A-200-X-01.xbim";
             modelName = @"C:\Users\Claudio\Dropbox (Northumbria University)\Projects\uniZite\BIM model\Hadsel Bygg B VVS.xbim";
+            modelName = @"C:\Users\Claudio\Dropbox (Northumbria University)\Projects\uniZite\Style\Hadsel Bygg B VVS.xBIM";
+            modelName = @"C:\Users\Claudio\Dropbox (Northumbria University)\Projects\uniZite\BIM model\VAMMA\Vamma12_ARK.xBIM";
+            // modelName = @"C:\Users\Claudio\Dropbox (Northumbria University)\Projects\uniZite\BIM model\VAMMA\Vamma12_RIE.xBIM";
 
             // at uni
             // modelName = @"C:\Users\sgmk2\Dropbox (Northumbria University)\Projects\uniZite\BIM model\ARK 0-00-A-200-X-01.xBIM";
@@ -323,16 +326,21 @@ namespace Xbim.GLTF
                         dir.FullName,
                         f.Name + "." + storey.Name + ".gltf"
                         );
-                    //var ret = bldr.BuildInstancedScene(_model);
-                    //glTFLoader.Interface.SaveModel(ret, outName);
+                    var ret = bldr.BuildInstancedScene(_model);
+                    if (ret != null)
+                    {
+                        // actual write if not empty model.
+                        //
+                        glTFLoader.Interface.SaveModel(ret, outName);
 
-                    // write json
-                    //
-                    var jsonFileName = Path.ChangeExtension(outName, "json");
-                    var bme = new BuildingModelExtractor();
-                    bme.CustomFilter = this.Filter;
-                    var rep = bme.GetModel(_model);
-                    rep.Export(jsonFileName);
+                        // write json
+                        //
+                        var jsonFileName = Path.ChangeExtension(outName, "json");
+                        var bme = new BuildingModelExtractor();
+                        bme.CustomFilter = this.Filter;
+                        var rep = bme.GetModel(_model);
+                        rep.Export(jsonFileName);
+                    }
                 }
             }
             else

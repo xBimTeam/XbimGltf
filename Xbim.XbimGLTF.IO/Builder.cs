@@ -156,6 +156,8 @@ namespace Xbim.GLTF
         public gltf.Gltf Build()
         {
             var gltf = CreateModel();
+            if (_coordinatesBuffer.Count == 0)
+                return null;
 
             // coordinates of bufferviews in buffer
             _coordinatesBv.ByteLength = _coordinatesBuffer.Count;

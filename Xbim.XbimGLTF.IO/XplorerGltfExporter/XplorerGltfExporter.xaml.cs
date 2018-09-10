@@ -1,9 +1,13 @@
-﻿using System.Diagnostics;
+﻿using log4net;
+using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using Xbim.Common;
+using Xbim.Common.Logging;
 using Xbim.GLTF;
+using Xbim.Ifc;
 using Xbim.Presentation;
 using Xbim.Presentation.XplorerPluginSystem;
 
@@ -105,13 +109,36 @@ namespace Xbim.Gltf
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (Model == null)
+            IfcStore s = Model as IfcStore;
+            if (s == null)
+            {
+                MessageBox.Show("Please save the model in xbim format before exporting.");
                 return;
-                        
-            var bldr = new Builder();
-            var ret = bldr.BuildInstancedScene(Model);
-                        
-            // glTFLoader.Interface.SaveModel(ret, _gltfOutName);
+            }
+
+            ILog Log = LogManager.GetLogger("Xbim.Gltf.XplorerGltfExporter");
+
+            var curr = this.Cursor;
+            Cursor = System.Windows.Input.Cursors.Wait;
+
+            try
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+
+                var savename = Path.ChangeExtension(s.FileName, ".gltf");
+                var bldr = new Builder();
+                var ret = bldr.BuildInstancedScene(Model);
+                glTFLoader.Interface.SaveModel(ret, savename);
+
+                Log.Info($"Gltf Model exported to '{savename}' in {sw.ElapsedMilliseconds} ms.");
+            }
+            catch (System.Exception err)
+            {
+                Log.Error("Error exporting, see inner exception for details.", err);
+            }
+            Cursor = curr;
+
         }
     }
 }
