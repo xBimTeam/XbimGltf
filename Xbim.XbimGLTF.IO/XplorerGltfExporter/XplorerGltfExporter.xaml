@@ -32,8 +32,11 @@
             <TabItem Header="Export" Visibility="{Binding UIVisibility}">
                 <Grid>
                     <TabControl Margin="5,5,5,35">
-                        <TabItem Header="Whole model">
-                            <TextBlock Margin="5"  TextWrapping="WrapWithOverflow">Whole model export is the only option currently available. More options are under development.</TextBlock>
+                        <TabItem Header="Model">
+                            <StackPanel>
+                                <TextBlock Margin="5"  TextWrapping="WrapWithOverflow">The whole model is exported to a single file in the same folder of the currently open model.</TextBlock>
+                                <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="5" Height="23" VerticalAlignment="Bottom" FontWeight="Bold" Click="Button_Click" >Export</Button>
+                            </StackPanel>
                         </TabItem>
                         <TabItem x:Name="Browse" Header="Selection" Visibility="Collapsed">
                             <Grid>
@@ -62,7 +65,7 @@
                         
                     </TabControl>
 
-                    <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="5" Height="23" VerticalAlignment="Bottom" FontWeight="Bold" Click="Button_Click" >Export</Button>
+                    
                 </Grid>
              
             </TabItem>

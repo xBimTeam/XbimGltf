@@ -1,4 +1,5 @@
 ﻿using log4net;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -110,7 +111,7 @@ namespace Xbim.Gltf
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             IfcStore s = Model as IfcStore;
-            if (s == null)
+            if (s == null || string.IsNullOrEmpty(s.FileName))
             {
                 MessageBox.Show("Please save the model in xbim format before exporting.");
                 return;
@@ -120,7 +121,6 @@ namespace Xbim.Gltf
 
             var curr = this.Cursor;
             Cursor = System.Windows.Input.Cursors.Wait;
-
             try
             {
                 Stopwatch sw = new Stopwatch();
@@ -132,6 +132,18 @@ namespace Xbim.Gltf
                 glTFLoader.Interface.SaveModel(ret, savename);
 
                 Log.Info($"Gltf Model exported to '{savename}' in {sw.ElapsedMilliseconds} ms.");
+                FileInfo f = new FileInfo(s.FileName);
+                
+                var answ = MessageBox.Show("File created, do you want to show it in windows explorer?", "Completed", MessageBoxButton.YesNo);
+                if (answ == MessageBoxResult.Yes)
+                    SelectFile(savename);
+
+                //System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo()
+                //{
+                //    FileName = f.DirectoryName,
+                //    UseShellExecute = true,
+                //    Verb = "open"
+                //});
             }
             catch (System.Exception err)
             {
@@ -139,6 +151,21 @@ namespace Xbim.Gltf
             }
             Cursor = curr;
 
+        }
+
+        private void SelectFile(string fullName)
+        {
+            
+            if (!File.Exists(fullName))
+            {
+                return;
+            }
+
+            // combine the arguments together
+            // it doesn't matter if there is a space after ','
+            string argument = "/select, \"" + fullName + "\"";
+
+            System.Diagnostics.Process.Start("explorer.exe", argument);
         }
     }
 }
