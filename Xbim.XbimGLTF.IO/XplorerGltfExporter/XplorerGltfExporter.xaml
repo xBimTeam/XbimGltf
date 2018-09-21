@@ -31,51 +31,63 @@
             </TabItem>
             <TabItem Header="Export" Visibility="{Binding UIVisibility}">
                 <Grid>
-                    <TabControl Margin="5,5,5,35">
-                        <TabItem Header="Model">
-                            <StackPanel>
-                                <TextBlock Margin="5"  TextWrapping="WrapWithOverflow">The whole model is exported to a single file in the same folder of the currently open model.</TextBlock>
-                                <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="5" Height="23" VerticalAlignment="Bottom" FontWeight="Bold" Click="Button_Click" >Export</Button>
-                            </StackPanel>
-                        </TabItem>
-                        <TabItem x:Name="Browse" Header="Selection" Visibility="Collapsed">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="75*"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
+                    <StackPanel>
+                        <TabControl Margin="5">
+                            <TabItem Header="Model">
+                                <StackPanel>
+                                    <TextBlock Margin="5"  TextWrapping="WrapWithOverflow">The whole model is exported to a single file in the same folder of the currently open model.</TextBlock>
+                                    <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="5" Height="23" VerticalAlignment="Bottom" FontWeight="Bold" Click="ExportSingle_Click" >Export</Button>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="Multiple files">
+                                <StackPanel>
+                                    <TextBlock Margin="5"  TextWrapping="WrapWithOverflow">The whole model is exported to multiple files in the same folder of the currently open model.</TextBlock>
+                                    <GroupBox Margin="5" Header="Group by">
+                                        <StackPanel Margin="5">
+                                            <RadioButton IsChecked="True" GroupName="Grouping">storey (each file will contain only elements related to a semantically defined IfcStorey)</RadioButton>
+                                            <TextBlock Margin="8" HorizontalAlignment="Center" Foreground="Blue">Other options are under development</TextBlock>
+                                        </StackPanel>
+                                    </GroupBox>
+                                    <CheckBox IsChecked="True" x:Name="ExportSemantic" Margin="5">Export semantic json files next to gltf.</CheckBox>
+                                    <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="5" Height="23" VerticalAlignment="Bottom" FontWeight="Bold" Click="ExportMultiple_Click" >Export</Button>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem x:Name="Browse" Header="Selection" Visibility="Collapsed">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="75*"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
 
-                                <Label Grid.Column="0" Grid.Row="0" Content="Selection" VerticalAlignment="Center" />
-                                <Button Grid.Column="1"  Margin="5" Height="23" VerticalAlignment="Bottom" >Add current</Button>
-                                <ListView Grid.Column="1" Grid.Row="1" Margin="5" />
+                                    <Label Grid.Column="0" Grid.Row="0" Content="Selection" VerticalAlignment="Center" />
+                                    <Button Grid.Column="1"  Margin="5" Height="23" VerticalAlignment="Bottom" >Add current</Button>
+                                    <ListView Grid.Column="1" Grid.Row="1" Margin="5" />
 
-                                <Button Grid.Row="2" Grid.Column="1"  Margin="5" Height="23" VerticalAlignment="Bottom" >Clear</Button>
+                                    <Button Grid.Row="2" Grid.Column="1"  Margin="5" Height="23" VerticalAlignment="Bottom" >Clear</Button>
 
-                                <Label Grid.Column="0" Grid.Row="3" Content="Options" />
-                                <CheckBox Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" Margin="5">Export elements individually</CheckBox>
-                            </Grid>
-                        </TabItem>
+                                    <Label Grid.Column="0" Grid.Row="3" Content="Options" />
+                                    <CheckBox Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" Margin="5">Export elements individually</CheckBox>
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
                         
-                    </TabControl>
-
-                    
+                    </StackPanel>
                 </Grid>
-             
             </TabItem>
             <TabItem Header="License">
                 <StackPanel>
-                <TextBlock Margin="5" TextWrapping="WrapWithOverflow">
+                    <TextBlock Margin="5" TextWrapping="WrapWithOverflow">
                     This exporter makes use of the glTF C# reference library at https://github.com/KhronosGroup/glTF-CSharp-Loader<LineBreak/>
                     <LineBreak/>
-                    In compliance with their license requiremnt, please find the following statement:                                
-                </TextBlock>
+                    In compliance with their license requiremnt, please find the following statement:
+                    </TextBlock>
                     <Border Margin="5" Background="GhostWhite" BorderBrush="Gainsboro" BorderThickness="1">
                         <TextBlock TextWrapping="WrapWithOverflow" Margin="10" >
                         This license is for the C# reference loader, not the rest of the repository.<LineBreak/>

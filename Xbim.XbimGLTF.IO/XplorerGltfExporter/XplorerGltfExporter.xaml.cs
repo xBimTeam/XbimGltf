@@ -8,6 +8,7 @@ using System.Windows.Data;
 using Xbim.Common;
 using Xbim.Common.Logging;
 using Xbim.GLTF;
+using Xbim.GLTF.ExportHelpers;
 using Xbim.Ifc;
 using Xbim.Presentation;
 using Xbim.Presentation.XplorerPluginSystem;
@@ -108,7 +109,8 @@ namespace Xbim.Gltf
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+
+        private void ExportSingle_Click(object sender, RoutedEventArgs e)
         {
             IfcStore s = Model as IfcStore;
             if (s == null || string.IsNullOrEmpty(s.FileName))
@@ -147,15 +149,57 @@ namespace Xbim.Gltf
             }
             catch (System.Exception err)
             {
-                Log.Error("Error exporting, see inner exception for details.", err);
+                Log.Error("Error exporting gltf, see inner exception for details.", err);
             }
             Cursor = curr;
 
         }
 
+        private void ExportMultiple_Click(object sender, RoutedEventArgs e)
+        {
+            IfcStore s = Model as IfcStore;
+            if (s == null || string.IsNullOrEmpty(s.FileName))
+            {
+                MessageBox.Show("Please save the model in xbim format before exporting.");
+                return;
+            }
+
+            ILog Log = LogManager.GetLogger("Xbim.Gltf.XplorerGltfExporter");
+            var curr = this.Cursor;
+            Cursor = System.Windows.Input.Cursors.Wait;
+            try
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+
+                var exp = new MultipleFilesExporter();
+                IfcStore str = Model as IfcStore;
+                if (str != null)
+                    exp.ExportByStorey(str, ExportSemantic.IsChecked.Value);
+
+                var answ = MessageBox.Show("Files created, do you want to the folder in windows explorer?", "Completed", MessageBoxButton.YesNo);
+                if (answ == MessageBoxResult.Yes)
+                {
+                    FileInfo f = new FileInfo(str.FileName);
+                    Process.Start(new ProcessStartInfo()
+                    {
+                        FileName =  f.DirectoryName,
+                        UseShellExecute = true,
+                        Verb = "open"
+                    });
+                }
+            }
+            catch (Exception err)
+            {
+                Log.Error("Error exporting gltf, see inner exception for details.", err);
+            }
+            Cursor = curr;
+
+            
+        }
+
         private void SelectFile(string fullName)
         {
-            
             if (!File.Exists(fullName))
             {
                 return;
@@ -164,8 +208,9 @@ namespace Xbim.Gltf
             // combine the arguments together
             // it doesn't matter if there is a space after ','
             string argument = "/select, \"" + fullName + "\"";
-
-            System.Diagnostics.Process.Start("explorer.exe", argument);
+            Process.Start("explorer.exe", argument);
         }
+
+      
     }
 }

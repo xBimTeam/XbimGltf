@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
   <metadata>
     <id>XbimPlugin.Gltf.IO</id>
-    <version>4.0.0-V004</version>
+    <version>4.0.0-V005</version>
     <title>XbimPlugin.Gltf.IO</title>
     <authors>Claudio Benghi</authors>
     <owners>xBIM team</owners>

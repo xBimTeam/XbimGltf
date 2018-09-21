@@ -120,6 +120,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Builder.cs" />
+    <Compile Include="ExportHelpers\MultipleFilesExporter.cs" />
     <Compile Include="SemanticExport\BuildingElement.cs" />
     <Compile Include="SemanticExport\BuildingModelExtractor.cs" />
     <Compile Include="SemanticExport\BuildingStorey.cs" />
