@@ -1,12 +1,10 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using Xbim.Common;
-using Xbim.Common.Logging;
 using Xbim.GLTF;
 using Xbim.GLTF.ExportHelpers;
 using Xbim.Ifc;
@@ -75,7 +73,7 @@ namespace Xbim.Gltf
             SetBinding(SelectedItemProperty, new Binding("SelectedItem") { Source = mainWindow, Mode = BindingMode.TwoWay });
             SetBinding(SelectionProperty, new Binding("Selection") { Source = mainWindow.DrawingControl, Mode = BindingMode.TwoWay });
             SetBinding(ModelProperty, new Binding()); // whole datacontext binding, see http://stackoverflow.com/questions/8343928/how-can-i-create-a-binding-in-code-behind-that-doesnt-specify-a-path
-
+            
             // versioning information
             //
             var assembly = Assembly.GetAssembly(typeof(Xbim.GLTF.Builder));
@@ -119,7 +117,8 @@ namespace Xbim.Gltf
                 return;
             }
 
-            ILog Log = LogManager.GetLogger("Xbim.Gltf.XplorerGltfExporter");
+
+            // ILog Log = LogManager.GetLogger("Xbim.Gltf.XplorerGltfExporter");
 
             var curr = this.Cursor;
             Cursor = System.Windows.Input.Cursors.Wait;
@@ -133,7 +132,7 @@ namespace Xbim.Gltf
                 var ret = bldr.BuildInstancedScene(Model);
                 glTFLoader.Interface.SaveModel(ret, savename);
 
-                Log.Info($"Gltf Model exported to '{savename}' in {sw.ElapsedMilliseconds} ms.");
+                // Log.Info($"Gltf Model exported to '{savename}' in {sw.ElapsedMilliseconds} ms.");
                 FileInfo f = new FileInfo(s.FileName);
                 
                 var answ = MessageBox.Show("File created, do you want to show it in windows explorer?", "Completed", MessageBoxButton.YesNo);
@@ -149,11 +148,13 @@ namespace Xbim.Gltf
             }
             catch (System.Exception err)
             {
-                Log.Error("Error exporting gltf, see inner exception for details.", err);
+                // Log.Error("Error exporting gltf, see inner exception for details.", err);
             }
             Cursor = curr;
 
         }
+
+        // protected Microsoft.Extensions.Logging.ILogger Log { get; set; } = 
 
         private void ExportMultiple_Click(object sender, RoutedEventArgs e)
         {
@@ -164,7 +165,7 @@ namespace Xbim.Gltf
                 return;
             }
 
-            ILog Log = LogManager.GetLogger("Xbim.Gltf.XplorerGltfExporter");
+            
             var curr = this.Cursor;
             Cursor = System.Windows.Input.Cursors.Wait;
             try
@@ -191,7 +192,7 @@ namespace Xbim.Gltf
             }
             catch (Exception err)
             {
-                Log.Error("Error exporting gltf, see inner exception for details.", err);
+                // Log?.Error("Error exporting gltf, see inner exception for details.", err);
             }
             Cursor = curr;
 
