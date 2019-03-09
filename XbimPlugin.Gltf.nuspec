@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
   <metadata>
     <id>XbimPlugin.Gltf.IO</id>
-    <version>4.0.0-V005</version>
+    <version>4.0.1-V0001</version>
     <title>XbimPlugin.Gltf.IO</title>
     <authors>Claudio Benghi</authors>
     <owners>xBIM team</owners>
@@ -17,8 +17,8 @@
     <tags>gltf, XplorerPlugin</tags>
     <!-- dependencies need to be worked out, at this stage they will be ignored during install -->
     <dependencies>
-      <dependency id="Xbim.WindowsUI" version="4.0.12-V0061" />
-      <dependency id="Xbim.Essentials" version="4.0.30-V023" />
+      <dependency id="Xbim.WindowsUI" version="4.0.13-V004" />
+      <dependency id="Xbim.Essentials" version="4.0.30-V053" />
       <dependency id="glTF2Loader" version="1.1.1-alpha" />
     </dependencies>
   </metadata>
