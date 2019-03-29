@@ -135,7 +135,16 @@ namespace Xbim.Gltf
 
                 Log.Info($"Gltf Model exported to '{savename}' in {sw.ElapsedMilliseconds} ms.");
                 FileInfo f = new FileInfo(s.FileName);
-                
+
+                // write json
+                //
+                var jsonFileName = Path.ChangeExtension(s.FileName, "json");
+                var bme = new Xbim.GLTF.SemanticExport.BuildingModelExtractor();
+                var rep = bme.GetModel(s);
+                rep.Export(jsonFileName);
+
+                // decide if showing the model.
+                //
                 var answ = MessageBox.Show("File created, do you want to show it in windows explorer?", "Completed", MessageBoxButton.YesNo);
                 if (answ == MessageBoxResult.Yes)
                     SelectFile(savename);
