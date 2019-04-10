@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Xbim.Common;
 using Xbim.Ifc4.Interfaces;
 using Xbim.Ifc4.MeasureResource;
+using Xbim.Properties;
 
 namespace Xbim.GLTF.SemanticExport
 {
@@ -20,8 +21,29 @@ namespace Xbim.GLTF.SemanticExport
         /// </summary>
         public MeshingFilter CustomFilter;
 
+        public bool IncludeStandardPsets { get; set; } = true;
+
         public BuildingModel GetModel(IModel model)
         {
+            Definitions<PropertySetDef> propertyDefinitions = null;
+            // prepare standard properties dictionary
+            if (IncludeStandardPsets)
+            {
+                switch (model.Header.SchemaVersion.ToLowerInvariant())
+                {
+                    case "ifc2x3":
+                        propertyDefinitions = new Definitions<PropertySetDef>(Xbim.Properties.Version.IFC2x3);
+                        break;
+                    case "ifc4":
+                        propertyDefinitions = new Definitions<PropertySetDef>(Xbim.Properties.Version.IFC2x3);
+                        break;
+                    default:
+                        break;
+                }
+                if (propertyDefinitions != null)
+                    propertyDefinitions.LoadAllDefault();
+            }
+
             // cache systems list
             //
             var elementToSystem = new Dictionary<int, int>();
@@ -37,7 +59,6 @@ namespace Xbim.GLTF.SemanticExport
                     elementToSystem.Add(relatedObject.EntityLabel, systemRel.RelatingGroup.EntityLabel);
                 }
             }
-
 
             // now extract
             BuildingModel m = new BuildingModel();
@@ -56,6 +77,33 @@ namespace Xbim.GLTF.SemanticExport
 
                 BuildingElement el = new BuildingElement();
                 el.SetBase(element);
+
+                if (propertyDefinitions != null)
+                {
+                    var thisClass = new ApplicableClass();
+                    thisClass.ClassName = element.ExpressType.Name;
+                    var applicable = propertyDefinitions.DefinitionSets.Where(x => x.ApplicableClasses.Any(ac=>ac.ClassName == thisClass.ClassName));
+
+                    var psets = element.IsDefinedBy.Where(x => x.RelatingPropertyDefinition is IIfcPropertySet).Select(pd => pd.RelatingPropertyDefinition as IIfcPropertySetDefinition).ToList();
+                    foreach (var definition in applicable)
+                    {
+                        var matchingSet = psets.Where(x => x.Name == definition.Name).FirstOrDefault();
+                        if (matchingSet == null)
+                            continue;
+                        
+                        foreach (var singleProperty in definition.PropertyDefinitions)
+                        {
+                            var pFound = GetProperty(matchingSet, singleProperty);
+                            if (!string.IsNullOrWhiteSpace(pFound))
+                            {
+                                el.ifcInfo.Add(new IfcInfo(
+                                    matchingSet.Name + "/" + singleProperty.Name,
+                                    pFound
+                                    ));
+                            }
+                        }
+                    }
+                }
 
 
                 // storeys (prepares list and sets index, data extraction happens later)
@@ -112,6 +160,24 @@ namespace Xbim.GLTF.SemanticExport
             }
 
             return m;
+        }
+
+        private string GetProperty(IIfcPropertySetDefinition matchingSet, PropertyDef singleProperty)
+        {
+            var asSet = matchingSet as IIfcPropertySet;
+            if (asSet != null)
+            {
+                var found = asSet.HasProperties.OfType<IIfcPropertySingleValue>().FirstOrDefault(x => x.Name == singleProperty.Name);
+                if (found != null)
+                    return found.NominalValue.ToString();
+                foreach (var alias in singleProperty.NameAliases)
+                {
+                    found = asSet.HasProperties.OfType<IIfcPropertySingleValue>().FirstOrDefault(x => x.Name == singleProperty.Name);
+                    if (found != null)
+                        return found.NominalValue.ToString();
+                }
+            }
+            return "";
         }
 
         private double ToDouble(IfcLengthMeasure? totalHeight)

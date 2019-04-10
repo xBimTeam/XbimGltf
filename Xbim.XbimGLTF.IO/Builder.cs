@@ -14,7 +14,7 @@ using Xbim.Common.Geometry;
 
 namespace Xbim.GLTF
 {
-    internal class Builder
+    public class Builder
     {
         // enumberables
         //
