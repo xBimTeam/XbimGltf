@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
   <metadata>
     <id>XbimPlugin.Gltf.IO</id>
-    <version>4.0.1-V0002</version>
+    <version>4.0.1-V0003</version>
     <title>XbimPlugin.Gltf.IO</title>
     <authors>Claudio Benghi</authors>
     <owners>xBIM team</owners>
@@ -28,6 +28,7 @@
     <file src="Xbim.XbimGLTF.IO\bin\Release\glTFLoader.dll" target="lib\net45\glTFLoader.dll" />
     <file src="Xbim.XbimGLTF.IO\bin\Release\Xbim.Properties.dll" target="lib\net45\Xbim.Properties.dll" />
     <file src="Xbim.XbimGLTF.IO\bin\Release\Newtonsoft.Json.dll" target="lib\net45\Newtonsoft.Json.dll" />
+    <file src="Xbim.XbimGLTF.IO\bin\Release\Xbim.GLTF.IO.dll" target="lib\net45\Xbim.GLTF.IO.dll" />
     <file src="glTF-CSharp-LoaderLICENSE.md" target="lib\net45\glTF-CSharp-LoaderLICENSE.md" />
   </files>
 </package>

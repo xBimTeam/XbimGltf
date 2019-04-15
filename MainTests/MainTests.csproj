@@ -55,6 +55,9 @@
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.3.2\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xbim.CobieExpress, Version=4.0.0.0, Culture=neutral, PublicKeyToken=11e3655e576ec5a9, processorArchitecture=MSIL">
@@ -110,10 +113,6 @@
     <ProjectReference Include="..\Xbim.GLTF.IO\Xbim.GLTF.IO.csproj">
       <Project>{0c1cba5d-f2ee-4d3c-90bd-65bc783f8536}</Project>
       <Name>Xbim.GLTF.IO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Xbim.XbimGLTF.IO\Xbim.GLTF.csproj">
-      <Project>{11755BB4-23CF-4A71-9443-FB1E752CB53D}</Project>
-      <Name>Xbim.GLTF</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
