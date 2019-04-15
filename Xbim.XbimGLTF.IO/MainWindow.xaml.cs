@@ -275,13 +275,13 @@ namespace Xbim.GLTF
 
         }
 
-        private static void AddMesh(gltf.Gltf gltf, XbimMesher mesh)
-        {
-            gltf.Buffers = new glTFLoader.Schema.Buffer[1];
-            var buf = new glTFLoader.Schema.Buffer();
-            gltf.Buffers[0] = buf;
-            gltf.BufferViews = new gltf.BufferView[2];
-        }
+        //private static void AddMesh(gltf.Gltf gltf, XbimMesher mesh)
+        //{
+        //    gltf.Buffers = new glTFLoader.Schema.Buffer[1];
+        //    var buf = new glTFLoader.Schema.Buffer();
+        //    gltf.Buffers[0] = buf;
+        //    gltf.BufferViews = new gltf.BufferView[2];
+        //}
 
         
         

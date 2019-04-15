@@ -13,7 +13,7 @@ using Xbim.ModelGeometry.Scene;
 
 namespace Xbim.GLTF.ExportHelpers
 {
-    class MultipleFilesExporter
+    public class MultipleFilesExporter
     {
         int[] elemsToExport;
 
