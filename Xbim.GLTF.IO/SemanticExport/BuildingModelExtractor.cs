@@ -90,22 +90,24 @@ namespace Xbim.GLTF.SemanticExport
                         var matchingSet = psets.Where(x => x.Name == definition.Name).FirstOrDefault();
                         if (matchingSet == null)
                             continue;
+                        ElementPropertySet ps = new ElementPropertySet();
+                        ps.propertySetName = matchingSet.Name;
                         
                         foreach (var singleProperty in definition.PropertyDefinitions)
                         {
                             var pFound = GetProperty(matchingSet, singleProperty);
                             if (!string.IsNullOrWhiteSpace(pFound))
                             {
-                                el.ifcInfo.Add(new IfcInfo(
-                                    matchingSet.Name + "/" + singleProperty.Name,
+                                ps.properties.Add(new IfcInfo(
+                                    singleProperty.Name,
                                     pFound
                                     ));
                             }
                         }
+                        if (ps.properties.Any())
+                            el.propertySets.Add(ps);
                     }
                 }
-
-
                 // storeys (prepares list and sets index, data extraction happens later)
                 foreach (var rel in element.ContainedInStructure)
                 {

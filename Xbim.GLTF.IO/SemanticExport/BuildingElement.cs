@@ -27,5 +27,7 @@ namespace Xbim.GLTF.SemanticExport
 
         // todo: restore
         // public XbimMatrix3D gltfRepresentationPlacementMatrix; //": 4x4 matrix,
+
+        public List<ElementPropertySet> propertySets = new List<ElementPropertySet>();
     }
 }

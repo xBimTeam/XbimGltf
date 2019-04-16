@@ -103,6 +103,7 @@
     <Compile Include="SemanticExport\BuildingModelExtractor.cs" />
     <Compile Include="SemanticExport\BuildingStorey.cs" />
     <Compile Include="SemanticExport\BuildingSystem.cs" />
+    <Compile Include="SemanticExport\ElementPropertySet.cs" />
     <Compile Include="SemanticExport\IfcInfo.cs" />
     <Compile Include="SemanticExport\JsonIfcObject.cs" />
     <Compile Include="XbimMesher.cs" />
