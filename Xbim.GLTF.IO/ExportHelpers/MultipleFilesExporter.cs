@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xbim.Common;
+using Xbim.Common.Geometry;
 using Xbim.GLTF.SemanticExport;
 using Xbim.Ifc;
 using Xbim.Ifc4.Interfaces;
@@ -70,7 +71,7 @@ namespace Xbim.GLTF.ExportHelpers
                     dir.FullName,
                     f.Name + "." + storeyName + ".gltf"
                     );
-                var ret = bldr.BuildInstancedScene(store);
+                var ret = bldr.BuildInstancedScene(store, XbimMatrix3D.Identity);
                 if (ret != null && exportSemantic)
                 {
                     // actual write if not empty model.

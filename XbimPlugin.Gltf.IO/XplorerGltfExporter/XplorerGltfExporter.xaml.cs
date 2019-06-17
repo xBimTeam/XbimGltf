@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using Xbim.Common;
+using Xbim.Common.Geometry;
 using Xbim.Common.Logging;
 using Xbim.GLTF;
 using Xbim.GLTF.ExportHelpers;
@@ -109,7 +110,6 @@ namespace Xbim.Gltf
             }
         }
 
-
         private void ExportSingle_Click(object sender, RoutedEventArgs e)
         {
             IfcStore s = Model as IfcStore;
@@ -130,7 +130,7 @@ namespace Xbim.Gltf
 
                 var savename = Path.ChangeExtension(s.FileName, ".gltf");
                 var bldr = new Builder();
-                var ret = bldr.BuildInstancedScene(Model);
+                var ret = bldr.BuildInstancedScene(Model, XbimMatrix3D.Identity);
                 glTFLoader.Interface.SaveModel(ret, savename);
 
                 Log.Info($"Gltf Model exported to '{savename}' in {sw.ElapsedMilliseconds} ms.");

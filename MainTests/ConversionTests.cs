@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xbim.Common.Geometry;
 using Xbim.GLTF;
 using Xbim.Ifc;
 using Xbim.ModelGeometry.Scene;
@@ -29,7 +30,7 @@ namespace MainTests
 
                 var savename = Path.ChangeExtension(s.FileName, ".gltf");
                 var bldr = new Builder();
-                var ret = bldr.BuildInstancedScene(s);
+                var ret = bldr.BuildInstancedScene(s, XbimMatrix3D.Identity);
                 glTFLoader.Interface.SaveModel(ret, savename);
 
                 Debug.WriteLine($"Gltf Model exported to '{savename}' in {sw.ElapsedMilliseconds} ms.");
