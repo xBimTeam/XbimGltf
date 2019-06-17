@@ -104,9 +104,10 @@ namespace Xbim.Geom
 
                 // add to lists
                 //
-                Positions.Capacity += pts.Count;
-                Normals.Capacity += pts.Count;
-                Indices.Capacity += idx.Count;
+                // Commented because of https://github.com/xBimTeam/XbimGltf/issues/2
+                //Positions.Capacity += pts.Count;
+                //Normals.Capacity += pts.Count;
+                //Indices.Capacity += idx.Count;
                 foreach (var floatsArray in pts)
                 {
                     var tmpPosition = new XbimPoint3D(floatsArray[0], floatsArray[1], floatsArray[2]);

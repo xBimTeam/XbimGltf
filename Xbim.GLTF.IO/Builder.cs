@@ -516,8 +516,9 @@ namespace Xbim.GLTF
         {
             // buffer preparation
             int startingBufferPoisition = _coordinatesBuffer.Count;
-            _coordinatesBuffer.Capacity = startingBufferPoisition + values.Count * sizeof(float);
-
+            
+            // Commented because of https://github.com/xBimTeam/XbimGltf/issues/2
+            //_coordinatesBuffer.Capacity = startingBufferPoisition + values.Count * sizeof(float);
             
             // prepare to evaluate min max:
             float[] min = new float[] { float.MaxValue, float.MaxValue, float.MaxValue };
