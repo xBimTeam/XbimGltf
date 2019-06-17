@@ -23,7 +23,7 @@ namespace Xbim.GLTF.SemanticExport
 
         public bool IncludeStandardPsets { get; set; } = true;
 
-        public BuildingModel GetModel(IModel model)
+        public BuildingModel GetModel(IModel model, IIfcBuildingStorey ignored = null)
         {
             Definitions<PropertySetDef> propertyDefinitions = null;
             // prepare standard properties dictionary
