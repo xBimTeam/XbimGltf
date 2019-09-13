@@ -21,7 +21,17 @@ namespace Xbim.GLTF.SemanticExport
         /// </summary>
         public MeshingFilter CustomFilter;
 
+        /// <summary>
+        /// If true, standardised propery sets are extracted to the semantic json file.
+        /// </summary>
         public bool IncludeStandardPsets { get; set; } = true;
+
+        /// <summary>
+        /// If true, NON standardised propery sets are extracted to the semantic json file.
+        /// TODO: NOT IMPLEMENTED.
+        /// </summary>
+        public bool IncludeNonStandardPsets { get; set; } = false;
+
 
         public BuildingModel GetModel(IModel model, IIfcBuildingStorey ignored = null)
         {
