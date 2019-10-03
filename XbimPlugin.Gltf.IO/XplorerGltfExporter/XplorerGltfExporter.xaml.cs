@@ -186,7 +186,7 @@ namespace Xbim.Gltf
                 if (str != null)
                     exp.ExportByStorey(str, ExportSemantic.IsChecked.Value);
 
-                var answ = MessageBox.Show("Files created, do you want to the folder in windows explorer?", "Completed", MessageBoxButton.YesNo);
+                var answ = MessageBox.Show("Files created, do you want to open the folder in windows explorer?", "Completed", MessageBoxButton.YesNo);
                 if (answ == MessageBoxResult.Yes)
                 {
                     FileInfo f = new FileInfo(str.FileName);

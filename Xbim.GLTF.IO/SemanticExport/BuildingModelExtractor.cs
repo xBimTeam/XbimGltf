@@ -76,33 +76,33 @@ namespace Xbim.GLTF.SemanticExport
             List<IIfcBuildingStorey> storeys = new List<IIfcBuildingStorey>();
             List<IIfcSystem> systems = new List<IIfcSystem>();
 
-            foreach (var element in model.Instances.OfType<IIfcElement>())
+            foreach (var ifcElement in model.Instances.OfType<IIfcElement>())
             {
                 if (CustomFilter != null)
                 {
-                    var skip = CustomFilter(element.EntityLabel, model);
+                    var skip = CustomFilter(ifcElement.EntityLabel, model);
                     if (skip)
                         continue;
                 }
 
-                BuildingElement el = new BuildingElement();
-                el.SetBase(element);
+                BuildingElement semanticElement = new BuildingElement();
+                semanticElement.SetBase(ifcElement);
 
                 if (propertyDefinitions != null)
                 {
                     var thisClass = new ApplicableClass();
-                    thisClass.ClassName = element.ExpressType.Name;
-                    var applicable = propertyDefinitions.DefinitionSets.Where(x => x.ApplicableClasses.Any(ac=>ac.ClassName == thisClass.ClassName));
+                    thisClass.ClassName = ifcElement.ExpressType.Name;
+                    var applicable = propertyDefinitions.DefinitionSets.Where(x => x.ApplicableClasses.Any(ac => ac.ClassName == thisClass.ClassName));
 
-                    var psets = element.IsDefinedBy.Where(x => x.RelatingPropertyDefinition is IIfcPropertySet).Select(pd => pd.RelatingPropertyDefinition as IIfcPropertySetDefinition).ToList();
+                    var psets = ifcElement.IsDefinedBy.Where(x => x.RelatingPropertyDefinition is IIfcPropertySet).Select(pd => pd.RelatingPropertyDefinition as IIfcPropertySetDefinition).ToList();
                     foreach (var definition in applicable)
                     {
                         var matchingSet = psets.Where(x => x.Name == definition.Name).FirstOrDefault();
                         if (matchingSet == null)
                             continue;
-                        ElementPropertySet ps = new ElementPropertySet();
+                        var ps = new ElementPropertySet();
                         ps.propertySetName = matchingSet.Name;
-                        
+
                         foreach (var singleProperty in definition.PropertyDefinitions)
                         {
                             var pFound = GetProperty(matchingSet, singleProperty);
@@ -115,28 +115,31 @@ namespace Xbim.GLTF.SemanticExport
                             }
                         }
                         if (ps.properties.Any())
-                            el.propertySets.Add(ps);
+                            semanticElement.propertySets.Add(ps);
                     }
                 }
+
                 // storeys (prepares list and sets index, data extraction happens later)
-                foreach (var rel in element.ContainedInStructure)
+                semanticElement.ifcStoreyIndex = GetStoreyId(ifcElement, storeys);
+                if (semanticElement.ifcStoreyIndex == -1)
                 {
-                    if (rel.RelatingStructure is IIfcBuildingStorey storey)
+                    // try through upper level of aggregation (up from the aggregates to the RelatingObject)
+                    //
+                    foreach (var relAggreg in ifcElement.Decomposes.OfType<IIfcRelAggregates>())
                     {
-                        int index = storeys.IndexOf(storey);
-                        if (index == -1)
+                        int found = GetStoreyId(relAggreg.RelatingObject as IIfcElement, storeys);
+                        if (found != -1)
                         {
-                            index = storeys.Count;
-                            storeys.Add(storey);
+                            semanticElement.ifcStoreyIndex = found;
+                            break;
                         }
-                        el.ifcStoreyIndex = index;
-                    }                    
+                    }
                 }
 
                 // systems (prepares list and sets index, data extraction happens later)
-                if (elementToSystem.ContainsKey(element.EntityLabel))
+                if (elementToSystem.ContainsKey(ifcElement.EntityLabel))
                 {
-                    var systemId = elementToSystem[element.EntityLabel];
+                    var systemId = elementToSystem[ifcElement.EntityLabel];
                     var system = model.Instances[systemId] as IIfcSystem;
                     if (system != null)
                     {
@@ -146,12 +149,12 @@ namespace Xbim.GLTF.SemanticExport
                             index = systems.Count;
                             systems.Add(system);
                         }
-                        el.ifcSystemIndex = index;
+                        semanticElement.ifcSystemIndex = index;
                     }
                 }
-                
+
                 // now add element
-                m.elements.Add(el);
+                m.elements.Add(semanticElement);
             }
 
             // data extraction for the dicionaries happens here
@@ -172,6 +175,27 @@ namespace Xbim.GLTF.SemanticExport
             }
 
             return m;
+        }
+
+        private static int GetStoreyId(IIfcElement ifcElement, List<IIfcBuildingStorey> storeys)
+        {
+            if (ifcElement == null)
+                return -1;
+            var ret = -1;
+            foreach (var rel in ifcElement.ContainedInStructure)
+            {
+                if (rel.RelatingStructure is IIfcBuildingStorey storey)
+                {
+                    int index = storeys.IndexOf(storey);
+                    if (index == -1)
+                    {
+                        index = storeys.Count;
+                        storeys.Add(storey);
+                    }
+                    ret = index;
+                }
+            }
+            return ret;
         }
 
         private string GetProperty(IIfcPropertySetDefinition matchingSet, PropertyDef singleProperty)

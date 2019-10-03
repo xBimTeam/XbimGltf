@@ -51,9 +51,22 @@ namespace Xbim.GLTF.ExportHelpers
                 List<int> els = new List<int>();
                 foreach (var rel in rels)
                 {
-                    els.AddRange(rel.RelatedElements.Select(x => x.EntityLabel));
+                    // entities directly in the relation
+                    //
+                    var entitiesInStoreyRel = rel.RelatedElements.Select(x => x.EntityLabel).ToList();
+                    els.AddRange(entitiesInStoreyRel);
+
+                    // decomposed elements
+                    // 
+                    var relsToComposingEntities = store.Instances.OfType<IIfcRelAggregates>().Where(x => entitiesInStoreyRel.Contains(x.RelatingObject.EntityLabel));
+                    foreach (var relToComposingEntities in relsToComposingEntities)
+                    {
+                        els.AddRange(relToComposingEntities.RelatedObjects.Select(x => x.EntityLabel).ToList());  
+                    }
                 }
-                elemsToExport = els.ToArray();
+
+                // only export once
+                elemsToExport = els.Distinct().ToArray();
 
                 // write gltf
                 //
