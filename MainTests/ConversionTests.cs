@@ -47,6 +47,7 @@ namespace MainTests
 
         private static FileInfo CreateGeometry(FileInfo f, bool mode, bool useAlternativeExtruder)
         {
+            IfcStore.ModelProviderFactory.UseHeuristicModelProvider();
             using (var m = IfcStore.Open(f.FullName))
             {
                 var c = new Xbim3DModelContext(m);
