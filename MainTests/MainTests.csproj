@@ -26,6 +26,11 @@
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Xbim.XbimGLTF.IO\Xbim.GLTF.csproj" />
+    <ProjectReference Include="..\Xbim.GLTF.IO\Xbim.GLTF.IO.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Files\OneWallTwoWindows.ifc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

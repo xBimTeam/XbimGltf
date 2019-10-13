@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+    <id>Xbim.Gltf.IO</id>
+    <version>4.0.1-V0008</version>
+    <title>Xbim.Gltf.IO</title>
+    <authors>Claudio Benghi</authors>
+    <owners>xBIM team</owners>
+    <licenseUrl>https://raw.githubusercontent.com/xBimTeam/XbimEssentials/master/LICENCE.md</licenseUrl>
+    <projectUrl>https://github.com/xBimTeam/</projectUrl>
+    <iconUrl>https://avatars1.githubusercontent.com/u/2284875?v=3&amp;s=240</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>GLTF model export for the Xbim toolkit.</description>
+    <summary>.</summary>
+    <language>en-GB</language>
+    <tags>gltf, xBIM, IFC</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="11.0.2" />
+      <dependency id="Xbim.Geometry" version="4.0.16-V0002" />
+      <dependency id="Xbim.PropertySets" version="4.0.1" />
+      <dependency id="glTF2Loader" version="1.1.3-alpha" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Xbim.GLTF.IO\bin\Release\Xbim.GLTF.IO.dll" target="lib\net45\Xbim.GLTF.IO.dll" />
+    </files>
+</package>

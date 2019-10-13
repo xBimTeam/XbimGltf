@@ -14,7 +14,7 @@ using Xbim.Common.Geometry;
 
 namespace Xbim.GLTF
 {
-    internal class Builder
+    public class Builder
     {
         // enumberables
         //
@@ -60,7 +60,7 @@ namespace Xbim.GLTF
             _coordinatesBv = new gltf.BufferView();
             _coordinatesBv.Buffer = 0;
             _coordinatesBv.Target = gltf.BufferView.TargetEnum.ARRAY_BUFFER;
-            _coordinatesBv.ByteStride = 12; // todo: what is this number?
+            _coordinatesBv.ByteStride = 12; // distance in bytes from one element to the next. Thanks to @tmarti
             _bufferViews.Add(_coordinatesBv);
         }
 
@@ -324,7 +324,7 @@ namespace Xbim.GLTF
         /// <param name="exclude">The types of elements that are going to be omitted (e.g. ifcSpaces).</param>
         /// <param name="EntityLebels">Only entities in the collection are exported; if null exports the whole model</param>
         /// <returns></returns>
-        public gltf.Gltf BuildInstancedScene(IModel model, List<Type> exclude = null, HashSet<int> EntityLebels = null)
+        public gltf.Gltf BuildInstancedScene(IModel model, XbimMatrix3D overallTransform, List<Type> exclude = null, HashSet<int> EntityLebels = null)
         {
             Init();
             Dictionary<int, ShapeComponentIds> geometries = new Dictionary<int, ShapeComponentIds>();
@@ -384,7 +384,18 @@ namespace Xbim.GLTF
                         }
                         var tnode = new gltf.Node();
                         tnode.Name = entity.Name  + $" #{entity.EntityLabel}";
-                        tnode.Matrix = GetTransformInMeters(model, shapeInstance);
+
+                        // instance transformation needs to be expressed in meters
+                        //
+                        var inModelTransf = XbimMatrix3D.Copy(shapeInstance.Transformation);
+                        inModelTransf.OffsetX /= model.ModelFactors.OneMeter;
+                        inModelTransf.OffsetY /= model.ModelFactors.OneMeter;
+                        inModelTransf.OffsetZ /= model.ModelFactors.OneMeter;
+
+                        // overalltransform is already expressed in meters
+                        var tMat = XbimMatrix3D.Multiply(inModelTransf, overallTransform);
+
+                        tnode.Matrix = tMat.ToFloatArray();
                         
                         // create mesh
                         var meshIndex = _meshes.Count;
@@ -447,7 +458,7 @@ namespace Xbim.GLTF
 
                         if (components != null)
                         {
-                            var arr = GetTransformInMeters(model, shapeInstance);
+                            // var arr = GetTransformInMeters(model, shapeInstance);
                             AddComponentsToMesh(targetMesh, components, materialIndex);
                         }
                     }
@@ -457,7 +468,7 @@ namespace Xbim.GLTF
                         //
                         var xbimMesher = new XbimMesher();
                         xbimMesher.AddMesh(shapeGeom.ShapeData);
-                        var trsf = GetTransformInMeters(model, shapeInstance);
+                        // var trsf = GetTransformInMeters(model, shapeInstance);
                         var components = AddGeom(
                                 xbimMesher.PositionsAsSingleList(model.ModelFactors.OneMeter),
                                 xbimMesher.Indices,
@@ -516,8 +527,9 @@ namespace Xbim.GLTF
         {
             // buffer preparation
             int startingBufferPoisition = _coordinatesBuffer.Count;
-            _coordinatesBuffer.Capacity = startingBufferPoisition + values.Count * sizeof(float);
-
+            
+            // Commented because of https://github.com/xBimTeam/XbimGltf/issues/2
+            //_coordinatesBuffer.Capacity = startingBufferPoisition + values.Count * sizeof(float);
             
             // prepare to evaluate min max:
             float[] min = new float[] { float.MaxValue, float.MaxValue, float.MaxValue };
@@ -633,12 +645,12 @@ namespace Xbim.GLTF
             return thisIndex;
         }
 
-        private static float[] GetTransformInMeters(IModel model, XbimShapeInstance shapeInstance)
+        private static float[] GetTransformInMeters(IModel modelForScaleFactor, XbimShapeInstance shapeInstance)
         {
             var arr = shapeInstance.Transformation.ToFloatArray();
-            arr[12] /= (float)model.ModelFactors.OneMeter;
-            arr[13] /= (float)model.ModelFactors.OneMeter;
-            arr[14] /= (float)model.ModelFactors.OneMeter;
+            arr[12] /= (float)modelForScaleFactor.ModelFactors.OneMeter;
+            arr[13] /= (float)modelForScaleFactor.ModelFactors.OneMeter;
+            arr[14] /= (float)modelForScaleFactor.ModelFactors.OneMeter;
             return arr;
         }
     }

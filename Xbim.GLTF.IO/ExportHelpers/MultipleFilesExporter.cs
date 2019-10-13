@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xbim.Common;
+using Xbim.Common.Geometry;
 using Xbim.GLTF.SemanticExport;
 using Xbim.Ifc;
 using Xbim.Ifc4.Interfaces;
@@ -13,7 +14,7 @@ using Xbim.ModelGeometry.Scene;
 
 namespace Xbim.GLTF.ExportHelpers
 {
-    class MultipleFilesExporter
+    public class MultipleFilesExporter
     {
         int[] elemsToExport;
 
@@ -50,9 +51,22 @@ namespace Xbim.GLTF.ExportHelpers
                 List<int> els = new List<int>();
                 foreach (var rel in rels)
                 {
-                    els.AddRange(rel.RelatedElements.Select(x => x.EntityLabel));
+                    // entities directly in the relation
+                    //
+                    var entitiesInStoreyRel = rel.RelatedElements.Select(x => x.EntityLabel).ToList();
+                    els.AddRange(entitiesInStoreyRel);
+
+                    // decomposed elements
+                    // 
+                    var relsToComposingEntities = store.Instances.OfType<IIfcRelAggregates>().Where(x => entitiesInStoreyRel.Contains(x.RelatingObject.EntityLabel));
+                    foreach (var relToComposingEntities in relsToComposingEntities)
+                    {
+                        els.AddRange(relToComposingEntities.RelatedObjects.Select(x => x.EntityLabel).ToList());  
+                    }
                 }
-                elemsToExport = els.ToArray();
+
+                // only export once
+                elemsToExport = els.Distinct().ToArray();
 
                 // write gltf
                 //
@@ -70,7 +84,7 @@ namespace Xbim.GLTF.ExportHelpers
                     dir.FullName,
                     f.Name + "." + storeyName + ".gltf"
                     );
-                var ret = bldr.BuildInstancedScene(store);
+                var ret = bldr.BuildInstancedScene(store, XbimMatrix3D.Identity);
                 if (ret != null && exportSemantic)
                 {
                     // actual write if not empty model.

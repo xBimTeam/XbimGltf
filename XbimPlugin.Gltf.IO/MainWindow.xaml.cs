@@ -275,83 +275,19 @@ namespace Xbim.GLTF
 
         }
 
-        private static void AddMesh(gltf.Gltf gltf, XbimMesher mesh)
-        {
-            gltf.Buffers = new glTFLoader.Schema.Buffer[1];
-            var buf = new glTFLoader.Schema.Buffer();
-            gltf.Buffers[0] = buf;
-            gltf.BufferViews = new gltf.BufferView[2];
-        }
+        //private static void AddMesh(gltf.Gltf gltf, XbimMesher mesh)
+        //{
+        //    gltf.Buffers = new glTFLoader.Schema.Buffer[1];
+        //    var buf = new glTFLoader.Schema.Buffer();
+        //    gltf.Buffers[0] = buf;
+        //    gltf.BufferViews = new gltf.BufferView[2];
+        //}
 
         
         
         private void TryMesh(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Method disabled.");
-            
-            //FileInfo f = new FileInfo(_gltfOutName);
-            //var dir = f.Directory;
-
-            //if (true)
-            //{
-            //    // var storey = _model.Instances.OfType<IIfcBuildingStorey>().FirstOrDefault();
-            //    //
-            //    foreach (var storey in _model.Instances.OfType<IIfcBuildingStorey>())
-            //    {
-            //        // prepare filter
-            //        var rels = _model.Instances.OfType<IIfcRelContainedInSpatialStructure>().Where(x => x.RelatingStructure.EntityLabel == storey.EntityLabel);
-            //        List<int> els = new List<int>();
-            //        foreach (var rel in rels)
-            //        {
-            //            els.AddRange(rel.RelatedElements.Select(x => x.EntityLabel));
-            //        }
-            //        elems = els.ToArray();
-
-            //        // write gltf
-            //        //
-            //        var bldr = new Builder();
-            //        bldr.BufferInBase64 = true;
-            //        bldr.CustomFilter = this.Filter;
-
-            //        var outName = Path.Combine(
-            //            dir.FullName,
-            //            f.Name + "." + storey.Name + ".gltf"
-            //            );
-            //        var ret = bldr.BuildInstancedScene(_model);
-            //        if (ret != null)
-            //        {
-            //            // actual write if not empty model.
-            //            //
-            //            glTFLoader.Interface.SaveModel(ret, outName);
-
-            //            // write json
-            //            //
-            //            var jsonFileName = Path.ChangeExtension(outName, "json");
-            //            var bme = new BuildingModelExtractor();
-            //            bme.CustomFilter = this.Filter;
-            //            var rep = bme.GetModel(_model);
-            //            rep.Export(jsonFileName);
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    if (true)
-            //    {
-            //        var bldr = new Builder();
-            //        bldr.BufferInBase64 = true;
-            //        var ret = bldr.BuildInstancedScene(_model);
-            //        glTFLoader.Interface.SaveModel(ret, _gltfOutName);
-            //    }
-            //    else
-            //    {
-            //        var bldr = new Builder();
-            //        bldr.BufferInBase64 = false;
-            //        var ret = bldr.BuildInstancedScene(_model);
-            //        var binName = Path.ChangeExtension(_gltfOutName, "gltfb");
-            //        glTFLoader.Interface.SaveBinaryModel(ret, bldr.GetBuffer(), binName);
-            //    }
-            //}
         }
 
         private void ToBin(object sender, RoutedEventArgs e)

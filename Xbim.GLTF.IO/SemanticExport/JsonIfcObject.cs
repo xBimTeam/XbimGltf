@@ -25,7 +25,7 @@ namespace Xbim.GLTF.SemanticExport
         /// </summary>
         public List<IfcInfo> ifcInfo = new List<IfcInfo>();
 
-        internal void SetBase(IIfcObject element)
+        virtual internal void SetBase(IIfcObject element)
         {
             this.ifcEntityLabel = element.EntityLabel;
             this.ifcGuid = element.GlobalId;

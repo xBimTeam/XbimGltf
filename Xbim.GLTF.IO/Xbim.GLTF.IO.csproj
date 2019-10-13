@@ -1,0 +1,47 @@
+﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.47">
+  <PropertyGroup>
+    <ProjectGuid>{11755BB4-23CF-4A71-9443-EB1E752CB53D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Xbim.Gltf.IO</AssemblyName>
+    <TargetFramework>net47</TargetFramework>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <ApplicationIcon />
+    <StartupObject />
+    <RootNamespace>Xbim.GLTF.IO</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Data\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <None Remove="Data\**" />
+    <Page Remove="Data\**" />
+    <_SettingsFiles Remove="Data\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="glTF2Loader" Version="1.1.1-alpha" />
+    <PackageReference Include="HelixToolkit.Wpf" Version="2015.1.715" />
+    <PackageReference Include="SharpZipLib" Version="1.0.0" />
+    <PackageReference Include="Xbim.Geometry" Version="5.1.284-develop" />
+    <PackageReference Include="Xbim.PropertySets" Version="4.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+</Project>

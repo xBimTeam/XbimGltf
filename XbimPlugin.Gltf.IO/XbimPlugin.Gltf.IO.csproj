@@ -1,6 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.47">
   <PropertyGroup>
-    <ProjectGuid>{11755BB4-23CF-4A71-9443-FB1E752CB53D}</ProjectGuid>
+    <ProjectGuid>{7DAFBD23-8E73-4359-9EC6-52B191344323}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AssemblyName>XbimPlugin.Gltf.IO</AssemblyName>
     <TargetFramework>net47</TargetFramework>
@@ -10,6 +10,8 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <ApplicationIcon />
+    <StartupObject />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -19,10 +21,20 @@
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Data\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <None Remove="Data\**" />
+    <Page Remove="Data\**" />
+    <_SettingsFiles Remove="Data\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="glTF2Loader" Version="1.1.1-alpha" />
     <PackageReference Include="HelixToolkit.Wpf" Version="2015.1.715" />
     <PackageReference Include="SharpZipLib" Version="1.0.0" />
-    <PackageReference Include="Xbim.WindowsUI" Version="5.0.102-prerelease" />
+    <PackageReference Include="Xbim.WindowsUI" Version="5.1.167-develop" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Xbim.GLTF.IO\Xbim.GLTF.IO.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -32,11 +44,5 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
-    <None Include="Data\BoxInterleaved.gltf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 </Project>

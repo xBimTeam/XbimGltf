@@ -22,10 +22,6 @@ namespace Xbim.GLTF.SemanticExport
         /// </summary>
         public int ifcSpaceIndex = -1; // ": index in the spaces array // for point 4
 
-        // todo: restore
-        // public string gltfRepresentationGUID; // ": "323ss-as32342-sdasa2332-aasa",
-
-        // todo: restore
-        // public XbimMatrix3D gltfRepresentationPlacementMatrix; //": 4x4 matrix,
+        public List<ElementPropertySet> propertySets = new List<ElementPropertySet>();
     }
 }

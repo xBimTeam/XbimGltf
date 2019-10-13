@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using Xbim.Common;
+using Xbim.Common.Geometry;
 using Xbim.GLTF;
 using Xbim.GLTF.ExportHelpers;
 using Xbim.Ifc;
@@ -107,7 +108,6 @@ namespace Xbim.Gltf
             }
         }
 
-
         private void ExportSingle_Click(object sender, RoutedEventArgs e)
         {
             IfcStore s = Model as IfcStore;
@@ -129,12 +129,21 @@ namespace Xbim.Gltf
 
                 var savename = Path.ChangeExtension(s.FileName, ".gltf");
                 var bldr = new Builder();
-                var ret = bldr.BuildInstancedScene(Model);
+                var ret = bldr.BuildInstancedScene(Model, XbimMatrix3D.Identity);
                 glTFLoader.Interface.SaveModel(ret, savename);
 
                 // Log.Info($"Gltf Model exported to '{savename}' in {sw.ElapsedMilliseconds} ms.");
                 FileInfo f = new FileInfo(s.FileName);
-                
+
+                // write json
+                //
+                var jsonFileName = Path.ChangeExtension(s.FileName, "json");
+                var bme = new Xbim.GLTF.SemanticExport.BuildingModelExtractor();
+                var rep = bme.GetModel(s);
+                rep.Export(jsonFileName);
+
+                // decide if showing the model.
+                //
                 var answ = MessageBox.Show("File created, do you want to show it in windows explorer?", "Completed", MessageBoxButton.YesNo);
                 if (answ == MessageBoxResult.Yes)
                     SelectFile(savename);
@@ -178,7 +187,7 @@ namespace Xbim.Gltf
                 if (str != null)
                     exp.ExportByStorey(str, ExportSemantic.IsChecked.Value);
 
-                var answ = MessageBox.Show("Files created, do you want to the folder in windows explorer?", "Completed", MessageBoxButton.YesNo);
+                var answ = MessageBox.Show("Files created, do you want to open the folder in windows explorer?", "Completed", MessageBoxButton.YesNo);
                 if (answ == MessageBoxResult.Yes)
                 {
                     FileInfo f = new FileInfo(str.FileName);
@@ -194,9 +203,7 @@ namespace Xbim.Gltf
             {
                 // Log?.Error("Error exporting gltf, see inner exception for details.", err);
             }
-            Cursor = curr;
-
-            
+            Cursor = curr; 
         }
 
         private void SelectFile(string fullName)

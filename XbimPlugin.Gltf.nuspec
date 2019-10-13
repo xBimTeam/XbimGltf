@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
   <metadata>
     <id>XbimPlugin.Gltf.IO</id>
-    <version>4.0.0-V005</version>
+    <version>4.0.1-V0008</version>
     <title>XbimPlugin.Gltf.IO</title>
     <authors>Claudio Benghi</authors>
     <owners>xBIM team</owners>
@@ -17,15 +17,18 @@
     <tags>gltf, XplorerPlugin</tags>
     <!-- dependencies need to be worked out, at this stage they will be ignored during install -->
     <dependencies>
-      <dependency id="Xbim.WindowsUI" version="4.0.12-V0061" />
-      <dependency id="Xbim.Essentials" version="4.0.30-V023" />
-      <dependency id="glTF2Loader" version="1.1.1-alpha" />
+      <dependency id="Xbim.WindowsUI" version="4.0.13-V012" />
+      <dependency id="Xbim.Essentials" version="4.0.30-V056" />
+      <dependency id="Xbim.PropertySets" version="4.0.1" />
+      <dependency id="glTF2Loader" version="1.1.3-alpha" />
     </dependencies>
   </metadata>
   <files>
-    <file src="Xbim.XbimGLTF.IO\bin\Release\XbimPlugin.Gltf.IO.exe" target="lib\net45\XbimPlugin.Gltf.IO.exe" />
-    <file src="Xbim.XbimGLTF.IO\bin\Release\glTFLoader.dll" target="lib\net45\glTFLoader.dll" />
-    <file src="Xbim.XbimGLTF.IO\bin\Release\Newtonsoft.Json.dll" target="lib\net45\Newtonsoft.Json.dll" />
+    <file src="XbimPlugin.Gltf.IO\bin\Release\XbimPlugin.Gltf.IO.exe" target="lib\net45\XbimPlugin.Gltf.IO.exe" />
+    <file src="XbimPlugin.Gltf.IO\bin\Release\glTFLoader.dll" target="lib\net45\glTFLoader.dll" />
+    <file src="XbimPlugin.Gltf.IO\bin\Release\Xbim.Properties.dll" target="lib\net45\Xbim.Properties.dll" />
+    <file src="XbimPlugin.Gltf.IO\bin\Release\Newtonsoft.Json.dll" target="lib\net45\Newtonsoft.Json.dll" />
+    <file src="XbimPlugin.Gltf.IO\bin\Release\Xbim.GLTF.IO.dll" target="lib\net45\Xbim.GLTF.IO.dll" />
     <file src="glTF-CSharp-LoaderLICENSE.md" target="lib\net45\glTF-CSharp-LoaderLICENSE.md" />
   </files>
 </package>
