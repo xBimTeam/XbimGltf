@@ -60,7 +60,7 @@ namespace Xbim.GLTF
             _coordinatesBv = new gltf.BufferView();
             _coordinatesBv.Buffer = 0;
             _coordinatesBv.Target = gltf.BufferView.TargetEnum.ARRAY_BUFFER;
-            _coordinatesBv.ByteStride = 12; // todo: what is this number?
+            _coordinatesBv.ByteStride = 12; // distance in bytes from one element to the next. Thanks to @tmarti
             _bufferViews.Add(_coordinatesBv);
         }
 

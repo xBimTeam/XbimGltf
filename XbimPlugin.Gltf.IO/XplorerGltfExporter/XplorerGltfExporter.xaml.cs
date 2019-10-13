@@ -202,9 +202,7 @@ namespace Xbim.Gltf
             {
                 Log.Error("Error exporting gltf, see inner exception for details.", err);
             }
-            Cursor = curr;
-
-            
+            Cursor = curr; 
         }
 
         private void SelectFile(string fullName)
