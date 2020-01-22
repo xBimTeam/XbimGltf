@@ -10,10 +10,18 @@ Geometry is exported in gltf format and the relative data in json. References ex
 
 This project provides a UI to consume the function of Xbim.GLTF.IO within the XbimXplorer application, via the plugin system.
 
-# Usage
+## Usage
 
 For most scenarios you will want to use nuget to install the library. You can do this by issuing the following command in the nuget command line
 
 ```
 Install-Package Xbim.Gltf.IO -Version 4.0.1-V0007 -Source https://www.myget.org/F/xbim-develop/api/v3/index.json
 ```
+
+## Author
+
+This library is developed by Claudio Benghi
+
+## License
+
+The library is published under the terms of the CDDL 1.1, alternative license agreements can be arranged contacting the author.
