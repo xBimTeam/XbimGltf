@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
   <metadata>
-    <id>XbimPlugin.Gltf.IO</id>
-    <version>4.0.1-V0008</version>
-    <title>XbimPlugin.Gltf.IO</title>
+    <id>XbimPlugin.Gltf.Exporter</id>
+    <version>5.1.100-develop</version>
+    <title>XbimPlugin.Gltf.Exporter</title>
     <authors>Claudio Benghi</authors>
     <owners>xBIM team</owners>
-    <licenseUrl>https://raw.githubusercontent.com/xBimTeam/XbimEssentials/master/LICENCE.md</licenseUrl>
+    <license type="expression">CDDL-1.1</license>
     <projectUrl>https://github.com/xBimTeam/</projectUrl>
-    <iconUrl>https://avatars1.githubusercontent.com/u/2284875?v=3&amp;s=240</iconUrl>
+    <icon>icon.ico</icon>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Integration with Xplorer UI for GLTF model export.</description>
     <summary>.</summary>
@@ -17,18 +17,18 @@
     <tags>gltf, XplorerPlugin</tags>
     <!-- dependencies need to be worked out, at this stage they will be ignored during install -->
     <dependencies>
-      <dependency id="Xbim.WindowsUI" version="4.0.13-V012" />
-      <dependency id="Xbim.Essentials" version="4.0.30-V056" />
-      <dependency id="Xbim.PropertySets" version="4.0.1" />
-      <dependency id="glTF2Loader" version="1.1.3-alpha" />
+		<group targetFramework="net45">
+			<dependency id="Xbim.WindowsUI" version="[5.1,5.2)" />
+		</group>
     </dependencies>
   </metadata>
   <files>
-    <file src="XbimPlugin.Gltf.IO\bin\Release\XbimPlugin.Gltf.IO.exe" target="lib\net45\XbimPlugin.Gltf.IO.exe" />
-    <file src="XbimPlugin.Gltf.IO\bin\Release\glTFLoader.dll" target="lib\net45\glTFLoader.dll" />
-    <file src="XbimPlugin.Gltf.IO\bin\Release\Xbim.Properties.dll" target="lib\net45\Xbim.Properties.dll" />
-    <file src="XbimPlugin.Gltf.IO\bin\Release\Newtonsoft.Json.dll" target="lib\net45\Newtonsoft.Json.dll" />
-    <file src="XbimPlugin.Gltf.IO\bin\Release\Xbim.GLTF.IO.dll" target="lib\net45\Xbim.GLTF.IO.dll" />
-    <file src="glTF-CSharp-LoaderLICENSE.md" target="lib\net45\glTF-CSharp-LoaderLICENSE.md" />
+	<file src="xbim.ico" target="icon.ico" />
+	<file src="XbimPlugin.Gltf.IO\bin\Release\net47\XbimPlugin.Gltf.IO.exe" target="lib\net45\XbimPlugin.Gltf.Exporter.exe" />
+	<file src="XbimPlugin.Gltf.IO\bin\Release\net47\glTFLoader.dll" target="lib\net45\glTFLoader.dll" />
+	<file src="XbimPlugin.Gltf.IO\bin\Release\net47\Xbim.Properties.dll" target="lib\net45\Xbim.Properties.dll" />
+	<file src="XbimPlugin.Gltf.IO\bin\Release\net47\Newtonsoft.Json.dll" target="lib\net45\Newtonsoft.Json.dll" />
+	<file src="XbimPlugin.Gltf.IO\bin\Release\net47\Xbim.GLTF.IO.dll" target="lib\net45\Xbim.GLTF.IO.dll" />
+	<file src="glTF-CSharp-LoaderLICENSE.md" target="lib\net45\glTF-CSharp-LoaderLICENSE.md" />
   </files>
 </package>
