@@ -32,7 +32,7 @@
     <PackageReference Include="glTF2Loader" Version="1.1.1-alpha" />
     <PackageReference Include="HelixToolkit.Wpf" Version="2015.1.715" />
     <PackageReference Include="SharpZipLib" Version="1.0.0" />
-    <PackageReference Include="Xbim.Geometry" Version="5.1.284-develop" />
+    <PackageReference Include="Xbim.Geometry" Version="5.1.312-develop" />
     <PackageReference Include="Xbim.PropertySets" Version="4.0.1" />
   </ItemGroup>
   <ItemGroup>
