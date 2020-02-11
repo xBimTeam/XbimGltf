@@ -18,7 +18,7 @@ namespace Xbim.Gltf
     /// Interaction logic for XplorerPlugin.xaml
     /// </summary>
     [XplorerUiElement(PluginWindowUiContainerEnum.LayoutAnchorable, PluginWindowActivation.OnMenu, "Gltf Exporter")]
-    public partial class XplorerGltfExporter : IXbimXplorerPluginWindow
+    public partial class XplorerGltfExporter : System.Windows.Controls.UserControl, IXbimXplorerPluginWindow
     {
         public XplorerGltfExporter()
         {

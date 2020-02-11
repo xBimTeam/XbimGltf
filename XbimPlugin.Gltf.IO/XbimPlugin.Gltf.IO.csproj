@@ -1,9 +1,9 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.47">
+﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.61">
   <PropertyGroup>
     <ProjectGuid>{7DAFBD23-8E73-4359-9EC6-52B191344323}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AssemblyName>XbimPlugin.Gltf.IO</AssemblyName>
-    <TargetFramework>net47</TargetFramework>
+    <TargetFrameworks>net47</TargetFrameworks>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
