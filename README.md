@@ -1,7 +1,8 @@
 # XbimGltf - Workflows and tools for the distributed representation of building asset via open standards
 
 _Claudio Benghi, Northumbria university at Newcastle, UK_
-26^th September, 2020
+
+26<sup>th</sup> September, 2020
 
 __Abstract__
 
@@ -49,11 +50,21 @@ The analysis of the problems, resulted in the formalisation of the following res
 2. A strategy for efficient transfer of non-geometric data for the required workflows
 3. The development of a software solution to enable the previous objectives.
 
+### Approach
+
+The identification of the business environment for the proposed solution also resulted in the definition of preferences that had to be considered in the development cycle.
+
+{>> TODO: File size <<}
+
 Strategically, a clear preference for open standard and open source algorithms was expressed as a way to maximise the chance of business continuity and continued accessibility and usability of the proposed solutions.
 
 ## Development cycle
 
-Hence the benefit to establish an alternative way to transfer relevant data.
+{>> TODO: format selection <<}
+
+{>> TODO: model reduction <<}
+
+{>> TODO: Flexible architectural <<}
 
 ## Evaluation and Demonstration
 
