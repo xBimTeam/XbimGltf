@@ -66,15 +66,25 @@ Furthermore, a list of guiding criteria were enumerated to support decision maki
 
 An initial review has been performed to select a long-list of suitable 3D formats; which has led to the following candidates: COLLADA, FBX, glTF, PLY, PRC, STL, Universal 3D, VRML (X3D), and Wavefront Obj.
 
-- __Collada__: Standard: ISO/PAS 17506, initial release 2004, last release 2008. XML format with public XSD schema definition and good coverage of loaders.
-- __FBX__: Owned by Autodesk, that publishes a C++ SDK with bindings for Python, includes motion, with 2D, 3D, audio, and video data. Most popular in the gaming domain.
-- __glTF__
-- __PLY__
-- __PRC__
-- __STL__
-- __Universal 3D__
-- __VRML (X3D)__
-- __Wavefront Obj__
+- __Collada__: Format maintained by Chronos Group published ad ISO/PAS 17506, initial release 2004, last release 2008. XML format with public XSD schema definition and good coverage of loaders (also known as DAE).
+- __FBX__: Format acquired and maintained by Autodesk, which regularly publishes a C++ SDK with bindings for Python; includes motion, with 2D, 3D, audio, and video data. Most popular in the gaming domain.
+- __glTF__: Format maintained by Chronos Group, started in 2013 and still active. Reference implementation is available as well as ports to several languages and environments.
+- __PLY__: Flexible 3D format specified by Greg Turk; excluded since it does not allow the definition of multiple objects.
+- __PRC__: Highly compressed 3D file developed by Adobe Systems. Last updated 2008. Powerful ability to describe alternative representation levels. Allows embedding of tri-dimensional models within PDF files.
+- __STL__: Widely popular format for triangulated meshes; excluded since it does not allow the definition of multiple objects.
+- __Universal 3D__: Accepted as ECMA-363 standard in August 2005. 3D PDF documents support U3D objects embedding and can be viewed in Adobe Reader. Provides definitions for higher order primitives (curved surfaces) and custom blocks.
+- __VRML (X3D)__:
+- __Wavefront Obj__:
+
+
+```
+minimizes both the size of 3D assets, and the runtime processing needed to unpack and use those assets
+```
+
+```
+it is an ecosystem of tools, documentation, and extensions contributed by the community
+```
+
 
 ### 3.2 Model reduction
 
