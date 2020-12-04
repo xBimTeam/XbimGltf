@@ -362,7 +362,7 @@ namespace Xbim.GLTF
                     // we start with a shape instance and then load its geometry.
                     
                     // a product (e.g. wall or window) in the scene returns:
-                    // - a node
+                    // - 1 node
                     //   - pointing to a mesh, with a transform
                     // - 1 mesh
                     //   - with as many mesh primitives as needed to render the different parts
@@ -435,8 +435,23 @@ namespace Xbim.GLTF
                         styleDic.Add(colId, materialIndex);
                     }
 
-                    // note: at a first investigation it looks like the shapeInstance.Transformation is the same for all shapes of the same product
+                    // if the IfcShapeLabel points to a type which is just a surface then its material needs to be doublesided.
+                    //
+                    bool doubleMaterial = false;
+                    var ShapeRepresentationItem = model.Instances[shapeGeom.IfcShapeLabel];
+                    if (ShapeRepresentationItem != null)
+					{
+                        if (ShapeRepresentationItem is IIfcFaceBasedSurfaceModel ||
+                            ShapeRepresentationItem is IIfcShellBasedSurfaceModel)
+                            doubleMaterial = true;
+                    }
+                    if (doubleMaterial)
+					{
+                        _materials[materialIndex].DoubleSided = true;
+					}
 
+
+                    // note: at a first investigation it looks like the shapeInstance.Transformation is the same for all shapes of the same product
                     if (shapeGeom.ReferenceCount > 1)
                     {
                         // retain the information to reuse the map multiple times

@@ -38,7 +38,12 @@ namespace Xbim.Gltf
         }
 
         public static DependencyProperty SelectionProperty =
-            DependencyProperty.Register("Selection", typeof(EntitySelection), typeof(XplorerGltfExporter), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits, OnPropertyChanged));
+            DependencyProperty.Register(
+                "Selection", 
+                typeof(EntitySelection), 
+                typeof(XplorerGltfExporter), 
+                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits, OnPropertyChanged)
+                );
 
         // SelectedEntity
         public IPersistEntity SelectedEntity
@@ -48,8 +53,12 @@ namespace Xbim.Gltf
         }
 
         public static DependencyProperty SelectedItemProperty =
-            DependencyProperty.Register("SelectedEntity", typeof(IPersistEntity), typeof(XplorerGltfExporter), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits,
-                                                                      OnPropertyChanged));
+            DependencyProperty.Register(
+                "SelectedEntity", 
+                typeof(IPersistEntity), 
+                typeof(XplorerGltfExporter), 
+                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits, OnPropertyChanged)
+                );
 
         // Model
         public IModel Model
@@ -59,8 +68,12 @@ namespace Xbim.Gltf
         }
 
         public static DependencyProperty ModelProperty =
-            DependencyProperty.Register("Model", typeof(IModel), typeof(XplorerGltfExporter), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits,
-                                                                      OnPropertyChanged));
+            DependencyProperty.Register(
+                "Model", 
+                typeof(IModel), 
+                typeof(XplorerGltfExporter), 
+                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits, OnPropertyChanged)
+                );
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
@@ -212,13 +225,10 @@ namespace Xbim.Gltf
             {
                 return;
             }
-
             // combine the arguments together
             // it doesn't matter if there is a space after ','
             string argument = "/select, \"" + fullName + "\"";
             Process.Start("explorer.exe", argument);
         }
-
-      
     }
 }
