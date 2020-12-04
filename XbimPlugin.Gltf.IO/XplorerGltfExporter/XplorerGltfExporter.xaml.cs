@@ -138,7 +138,7 @@ namespace Xbim.Gltf
                 // write json
                 //
                 var jsonFileName = Path.ChangeExtension(s.FileName, "json");
-                var bme = new Xbim.GLTF.SemanticExport.BuildingModelExtractor();
+                var bme = new GLTF.SemanticExport.BuildingModelExtractor();
                 var rep = bme.GetModel(s);
                 rep.Export(jsonFileName);
 

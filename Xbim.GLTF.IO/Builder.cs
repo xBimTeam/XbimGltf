@@ -375,6 +375,7 @@ namespace Xbim.GLTF
                     if (productLabel != shapeInstance.IfcProductLabel)
                     {
                         // need new product
+                        productLabel = shapeInstance.IfcProductLabel;
 
                         // create node
                         var nodeIndex = _nodes.Count;
@@ -383,7 +384,7 @@ namespace Xbim.GLTF
                         { // fire error here. 
                         }
                         var tnode = new gltf.Node();
-                        tnode.Name = entity.Name  + $" #{entity.EntityLabel}";
+                        tnode.Name = $"{entity.Name} #{entity.EntityLabel}";
 
                         // instance transformation needs to be expressed in meters
                         //
@@ -421,6 +422,7 @@ namespace Xbim.GLTF
                     // work out colour id; 
                     // the colour is associated with the instance, not the geometry.
                     // positives are styles, negatives are types
+                    //
                     var colId = shapeInstance.StyleLabel > 0
                         ? shapeInstance.StyleLabel
                         : shapeInstance.IfcTypeId * -1;
@@ -477,8 +479,10 @@ namespace Xbim.GLTF
                         AddComponentsToMesh(targetMesh, components, materialIndex);
                     }
                     iCnt++;
+#if DEBUG
                     if (iCnt % 100 == 0)
                         Debug.WriteLine($"added {iCnt} elements in {s.ElapsedMilliseconds}ms.");
+#endif
                 }
             }
             Debug.WriteLine($"added {iCnt} elements in {s.ElapsedMilliseconds}ms.");
