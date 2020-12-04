@@ -45,7 +45,7 @@ namespace Xbim.GLTF.SemanticExport
                         propertyDefinitions = new Definitions<PropertySetDef>(Xbim.Properties.Version.IFC2x3);
                         break;
                     case "ifc4":
-                        propertyDefinitions = new Definitions<PropertySetDef>(Xbim.Properties.Version.IFC2x3);
+                        propertyDefinitions = new Definitions<PropertySetDef>(Xbim.Properties.Version.IFC4);
                         break;
                     default:
                         break;
