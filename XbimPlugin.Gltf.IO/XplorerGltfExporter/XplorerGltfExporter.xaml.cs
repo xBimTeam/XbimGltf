@@ -23,6 +23,7 @@ namespace Xbim.Gltf
     {
         // internal static ILogger Logger { get; private set; }
 
+        protected ILogger Logger { get; private set; }
 
         public XplorerGltfExporter()
         {
@@ -102,7 +103,7 @@ namespace Xbim.Gltf
             var fvi = FileVersionInfo.GetVersionInfo(location);
             PluginVersion.Text += $"\r\nFile Version: {fvi.FileVersion}";
 
-            // Logger = _xpWindow.LoggerFactory.CreateLogger("XbimXplorer.Commands.QueryEngine");
+            Logger = _xpWindow.GetLoggerFactory().CreateLogger<XplorerGltfExporter>();
         }
 
 
@@ -135,9 +136,6 @@ namespace Xbim.Gltf
                 MessageBox.Show("Please save the model in xbim format before exporting.");
                 return;
             }
-
-
-            // ILog Log = LogManager.GetLogger("Xbim.Gltf.XplorerGltfExporter");
 
             var curr = this.Cursor;
             Cursor = System.Windows.Input.Cursors.Wait;
@@ -176,13 +174,11 @@ namespace Xbim.Gltf
             }
             catch (System.Exception err)
             {
-                // Log.Error("Error exporting gltf, see inner exception for details.", err);
+                Logger.LogError(err, "Error exporting gltf, see inner exception for details.");
             }
             Cursor = curr;
 
         }
-
-        // protected Microsoft.Extensions.Logging.ILogger Log { get; set; } = 
 
         private void ExportMultiple_Click(object sender, RoutedEventArgs e)
         {
@@ -220,7 +216,7 @@ namespace Xbim.Gltf
             }
             catch (Exception err)
             {
-                // Log?.Error("Error exporting gltf, see inner exception for details.", err);
+                Logger.LogError(err, "Error exporting gltf, see inner exception for details.");
             }
             Cursor = curr; 
         }

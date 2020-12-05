@@ -2,8 +2,8 @@
   "profiles": {
     "XbimPlugin.Gltf.IO": {
       "commandName": "Executable",
-      "executablePath": "C:\\Data\\Dev\\Xbim50\\XbimWindowsUI\\Output\\Debug\\net47\\XbimXplorer.exe",
-      "commandLineArgs": "/noplugins /plugin \"C:\\Data\\Dev\\Xbim50\\XbimGltf\\XbimPlugin.Gltf.IO\\bin\\Debug\\net47\\XbimPlugin.Gltf.IO.exe\""
+      "executablePath": "C:\\Data\\Dev\\Xbim50\\XbimWindowsUI\\Output\\Debug\\net472\\XbimXplorer.exe",
+      "commandLineArgs": "/noplugins /plugin \"C:\\Data\\Dev\\Xbim50\\XbimGltf\\XbimPlugin.Gltf.IO\\bin\\Debug\\net472\\XbimPlugin.Gltf.IO.exe\""
     }
   }
 }
