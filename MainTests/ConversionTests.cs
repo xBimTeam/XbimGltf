@@ -17,6 +17,8 @@ namespace MainTests
     public class ConversionTests
     {
         [TestMethod]
+        [DeploymentItem(@"Xbim.Geometry.Engine32.dll")]
+        [DeploymentItem(@"Xbim.Geometry.Engine64.dll")]
         [DeploymentItem(@"Files\OneWallTwoWindows.ifc")]
         public void CanConvertOneFile()
         {
