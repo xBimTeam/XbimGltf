@@ -4,7 +4,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Xbim.Gltf.IO</AssemblyName>
     <Version>5.1.100</Version>
-    <TargetFrameworks>net47</TargetFrameworks>
+    <TargetFrameworks>net472</TargetFrameworks>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -13,6 +13,7 @@
     <ApplicationIcon />
     <StartupObject />
     <RootNamespace>Xbim.GLTF.IO</RootNamespace>
+    <PackageLicenseExpression>CDDL-1.0</PackageLicenseExpression>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -32,7 +33,7 @@
     <PackageReference Include="glTF2Loader" Version="1.1.1-alpha" />
     <PackageReference Include="HelixToolkit.Wpf" Version="2015.1.715" />
     <PackageReference Include="SharpZipLib" Version="1.0.0" />
-    <PackageReference Include="Xbim.Geometry" Version="5.1.312-develop" />
+    <PackageReference Include="Xbim.Geometry" Version="5.1.402-develop" />
     <PackageReference Include="Xbim.PropertySets" Version="4.0.1" />
   </ItemGroup>
   <ItemGroup>

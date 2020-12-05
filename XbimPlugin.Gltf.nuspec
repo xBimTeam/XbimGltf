@@ -6,7 +6,7 @@
     <title>XbimPlugin.Gltf.Exporter</title>
     <authors>Claudio Benghi</authors>
     <owners>xBIM team</owners>
-    <license type="expression">CDDL-1.1</license>
+    <license type="expression">CDDL-1.0</license>
     <projectUrl>https://github.com/xBimTeam/</projectUrl>
     <icon>icon.ico</icon>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>

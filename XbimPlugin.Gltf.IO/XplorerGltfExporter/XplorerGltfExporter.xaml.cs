@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -20,6 +21,9 @@ namespace Xbim.Gltf
     [XplorerUiElement(PluginWindowUiContainerEnum.LayoutAnchorable, PluginWindowActivation.OnMenu, "Gltf Exporter")]
     public partial class XplorerGltfExporter : System.Windows.Controls.UserControl, IXbimXplorerPluginWindow
     {
+        // internal static ILogger Logger { get; private set; }
+
+
         public XplorerGltfExporter()
         {
             InitializeComponent();
@@ -97,6 +101,8 @@ namespace Xbim.Gltf
             var location = _xpWindow.GetAssemblyLocation(assembly);
             var fvi = FileVersionInfo.GetVersionInfo(location);
             PluginVersion.Text += $"\r\nFile Version: {fvi.FileVersion}";
+
+            // Logger = _xpWindow.LoggerFactory.CreateLogger("XbimXplorer.Commands.QueryEngine");
         }
 
 
