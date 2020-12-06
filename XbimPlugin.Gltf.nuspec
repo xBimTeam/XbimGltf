@@ -24,11 +24,11 @@
   </metadata>
   <files>
 	<file src="xbim.ico" target="icon.ico" />
-	<file src="XbimPlugin.Gltf.IO\bin\Release\net47\XbimPlugin.Gltf.IO.exe" target="lib\net45\XbimPlugin.Gltf.Exporter.exe" />
-	<file src="XbimPlugin.Gltf.IO\bin\Release\net47\glTFLoader.dll" target="lib\net45\glTFLoader.dll" />
-	<file src="XbimPlugin.Gltf.IO\bin\Release\net47\Xbim.Properties.dll" target="lib\net45\Xbim.Properties.dll" />
-	<file src="XbimPlugin.Gltf.IO\bin\Release\net47\Newtonsoft.Json.dll" target="lib\net45\Newtonsoft.Json.dll" />
-	<file src="XbimPlugin.Gltf.IO\bin\Release\net47\Xbim.GLTF.IO.dll" target="lib\net45\Xbim.GLTF.IO.dll" />
+	<file src="XbimPlugin.Gltf.IO\bin\Release\net472\XbimPlugin.Gltf.IO.exe" target="lib\net45\XbimPlugin.Gltf.Exporter.exe" />
+	<file src="XbimPlugin.Gltf.IO\bin\Release\net472\glTFLoader.dll" target="lib\net45\glTFLoader.dll" />
+	<file src="XbimPlugin.Gltf.IO\bin\Release\net472\Xbim.Properties.dll" target="lib\net45\Xbim.Properties.dll" />
+	<file src="XbimPlugin.Gltf.IO\bin\Release\net472\Newtonsoft.Json.dll" target="lib\net45\Newtonsoft.Json.dll" />
+	<file src="XbimPlugin.Gltf.IO\bin\Release\net472\Xbim.GLTF.IO.dll" target="lib\net45\Xbim.GLTF.IO.dll" />
 	<file src="glTF-CSharp-LoaderLICENSE.md" target="lib\net45\glTF-CSharp-LoaderLICENSE.md" />
   </files>
 </package>
