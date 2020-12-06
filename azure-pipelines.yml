@@ -56,7 +56,7 @@ steps:
 - task: NuGetToolInstaller@0
   displayName: 'Install Nuget'
   inputs:
-    versionSpec: '5.4.0'  # the License element was not found in 2.164.0
+    versionSpec: '5.8.0'  # the License element was not found in 2.164.0
 
 # Version .NET Core project files
 # Description - Applies a version to a .NET Core assembly via the .csproj files based on the build number. 
