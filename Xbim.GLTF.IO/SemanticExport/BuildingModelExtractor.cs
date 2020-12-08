@@ -204,12 +204,12 @@ namespace Xbim.GLTF.SemanticExport
             if (asSet != null)
             {
                 var found = asSet.HasProperties.OfType<IIfcPropertySingleValue>().FirstOrDefault(x => x.Name == singleProperty.Name);
-                if (found != null)
+                if (found != null && found.NominalValue != null)
                     return found.NominalValue.ToString();
                 foreach (var alias in singleProperty.NameAliases)
                 {
                     found = asSet.HasProperties.OfType<IIfcPropertySingleValue>().FirstOrDefault(x => x.Name == singleProperty.Name);
-                    if (found != null)
+                    if (found != null && found.NominalValue != null)
                         return found.NominalValue.ToString();
                 }
             }
