@@ -109,7 +109,7 @@ This project provides a UI to consume the function of Xbim.GLTF.IO within the Xb
 For most scenarios you will want to use ```nuget``` to reference the library in your project. You can do this by issuing the following command in the ```package manager command line```:
 
 ```
-Install-Package Xbim.Gltf.IO -Version 4.0.1-V0007 -Source https://www.myget.org/F/xbim-develop/api/v3/index.json
+Install-Package Xbim.Gltf.IO -Source https://www.myget.org/F/xbim-master/api/v3/index.json
 ```
 
 ## Library authors
